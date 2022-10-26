@@ -15,7 +15,6 @@ class record_audio():
         self.chunk = int(chunk) # 2^12 samples for buffer
         self.record_secs = record_secs # seconds to record
         
-        self.wav_output_filename = '/audio_recording/mic_array.wav' # name of .wav file
         self.audio = pyaudio.PyAudio() # create pyaudio instantiation
         # create pyaudio stream
         self.stream = self.audio.open(format = self.form_1,rate = self.samp_rate,channels = self.chans, \
@@ -42,11 +41,11 @@ class record_audio():
         self.stream.close()
         self.audio.terminate()
 
-    def saveWave(self):
+    def saveWave(self, name):
         # save the audio frames as .wav file
-        wavefile = wave.open(self.wav_output_filename,'wb')
+        wavefile = wave.open(name,'wb')
         wavefile.setnchannels(self.chans)
-        wavefile.setsampwidth(self.audio.get_sample_size(form_1))
+        wavefile.setsampwidth(self.audio.get_sample_size(self.form_1))
         wavefile.setframerate(self.samp_rate)
         wavefile.writeframes(b''.join(self.frames))
         wavefile.close()
