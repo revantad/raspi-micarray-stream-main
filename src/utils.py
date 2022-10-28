@@ -30,10 +30,10 @@ class record_audio():
         error = []
 
         # loop through stream and append audio chunks to frame array
-        for ii in range(0,int((self.samp_rate/self.chunk)*self.record_secs)):
+        for ii in range(0, int((self.samp_rate/self.chunk)*self.record_secs)):
             data = self.stream.read(self.chunk)
             
-            data_float = np.fromstring(data)
+            data_float = np.frombuffer(data)
             #ddat = np.fft.ifft(np.fft.fft(data_float, n = int(self.chunk//2 + 1)), n = int(2*self.chunk))
             
             if ii == 1:
