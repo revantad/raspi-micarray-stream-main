@@ -34,13 +34,13 @@ class record_audio():
             data = self.stream.read(self.chunk)
             
             data_float = np.frombuffer(data)
-            #ddat = np.fft.ifft(np.fft.fft(data_float, n = int(self.chunk//2 + 1)), n = int(2*self.chunk))
+            ddat = np.fft.ifft(np.fft.fft(data_float, n = int(self.chunk//2 + 1)), n = int(2*self.chunk))
             
             if ii == 1:
                 print(np.size(data_float))
                 
             #frame2.append(np.fft.fft(np.fft.fft(data_float, n = int(self.chunk/2 + 1)), n = int(self.chunk)))
-            #error.append(np.real(ddat) - data_float)
+            error.append(np.real(ddat) - data_float)
             frame2.append(data_float)
             #frames.append(data)
 
@@ -63,4 +63,11 @@ class record_audio():
         wavefile.setsampwidth(self.audio.get_sample_size(self.form_1))
         wavefile.setframerate(self.samp_rate)
         wavefile.writeframes(b''.join(self.frames))
+        wavefile.close()
+
+        wavefile = wave.open('test_error.wav','wb')
+        wavefile.setnchannels(self.chans)
+        wavefile.setsampwidth(self.audio.get_sample_size(self.form_1))
+        wavefile.setframerate(self.samp_rate)
+        wavefile.writeframes(b''.join(self.error))
         wavefile.close()
