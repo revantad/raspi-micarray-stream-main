@@ -33,7 +33,7 @@ class record_audio():
         for ii in range(0,int((self.samp_rate/self.chunk)*self.record_secs)):
             data = self.stream.read(self.chunk)
             
-            data_float = np.fromstring(data, dtype = float32)
+            data_float = np.fromstring(data, dtype = np.float32)
             if ii == 1:
                 print(data_float)
             #frame2.append(np.fft.fft(np.fft.fft(data_float, n = int(self.chunk/2 + 1)), n = int(self.chunk)))
