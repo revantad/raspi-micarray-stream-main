@@ -49,7 +49,7 @@ class record_audio():
         self.frames = frame2
         self.error = error
         self.stopRecording()
-        return frame2 error
+        return frame2, error
 
     def stopRecording(self):
         # stop the stream, close it, and terminate the pyaudio instantiation
