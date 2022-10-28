@@ -26,26 +26,21 @@ class record_audio():
     def recordAudio(self):
         print("recording")
         
-        frame2 = []
-        error = []
-
+        frames = []
+        
         # loop through stream and append audio chunks to frame array
         for ii in range(0, int((self.samp_rate/self.chunk)*self.record_secs)):
             data = self.stream.read(self.chunk)
             
             data_float = np.frombuffer(data, dtype = np.float)
-            ddat = np.fft.ifft(np.fft.fft(data_float, n = int(self.chunk//2 + 1)), n = int(2*self.chunk))
-            
-            error.append(np.real(ddat) - data_float)
-            frame2.append(data_float)
+            frames.append(data_float)
         
 
         print("finished recording")
         
-        self.frames = frame2
-        self.error = error
+        self.frames = frames
         self.stopRecording()
-        return frame2
+        
 
     def stopRecording(self):
         # stop the stream, close it, and terminate the pyaudio instantiation
@@ -60,11 +55,4 @@ class record_audio():
         wavefile.setsampwidth(self.audio.get_sample_size(self.form_1))
         wavefile.setframerate(self.samp_rate)
         wavefile.writeframes(b''.join(self.frames))
-        wavefile.close()
-
-        wavefile = wave.open('test_error.wav','wb')
-        wavefile.setnchannels(self.chans)
-        wavefile.setsampwidth(self.audio.get_sample_size(self.form_1))
-        wavefile.setframerate(self.samp_rate)
-        wavefile.writeframes(b''.join(self.error))
         wavefile.close()
