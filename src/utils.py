@@ -34,7 +34,7 @@ class record_audio():
             
             data_float = np.fromstring(data, dtype = np.float)
             if ii == 1:
-                print(np.real(np.fft.ifft(p.fft.fft(data_float, n = int(self.chunk//2 + 1), n = self.chunk))))
+                print(np.real(np.fft.ifft(np.fft.fft(data_float, n = int(self.chunk//2 + 1)), n = self.chunk)))
             #frame2.append(np.fft.fft(np.fft.fft(data_float, n = int(self.chunk/2 + 1)), n = int(self.chunk)))
             frame2.append(data_float)
             #frames.append(data)
