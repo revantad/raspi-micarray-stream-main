@@ -27,18 +27,21 @@ class record_audio():
         print("recording")
         
         frames = []
+        frames_dat = []
         
         # loop through stream and append audio chunks to frame array
         for ii in range(0, int((self.samp_rate/self.chunk)*self.record_secs)):
             data = self.stream.read(self.chunk)
-            
             data_float = np.frombuffer(data, dtype = np.float)
+            dat = np.real(np.fft.ifft(np.fft.fft(data_float, n = int(self.chunk//2 + 1)), n = int(2*self.chunk)))
             frames.append(data_float)
+            frames_dat.append(dat)
         
 
         print("finished recording")
         
         self.frames = frames
+        self.frames_dat = frames_dat
         self.stopRecording()
         
 
@@ -55,4 +58,11 @@ class record_audio():
         wavefile.setsampwidth(self.audio.get_sample_size(self.form_1))
         wavefile.setframerate(self.samp_rate)
         wavefile.writeframes(b''.join(self.frames))
+        wavefile.close()
+
+        wavefile = wave.open('audio_recordings/test_dat.wav','wb')
+        wavefile.setnchannels(self.chans)
+        wavefile.setsampwidth(self.audio.get_sample_size(self.form_1))
+        wavefile.setframerate(self.samp_rate)
+        wavefile.writeframes(b''.join(self.frames_dat))
         wavefile.close()
