@@ -34,7 +34,7 @@ class record_audio():
             
             data_float = np.frombuffer(data)
             data_float = data_float/(1e-6 + np.max(np.abs(data_float)))
-            frame2.append(lb.ifft(lb.fft(data_float, int(self.chunk//2 + 1)), int(self.chunk)))
+            frame2.append(lb.istft(lb.stft(data_float, int(self.chunk//2 + 1)), int(self.chunk)))
             #frames.append(data)
 
         print("finished recording")
