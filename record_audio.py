@@ -3,7 +3,7 @@ import os
 
 os.system('git pull')
 
-chunk = 1024
+chunk = 128
 seconds = 10
 audObject = record_audio(chunk, seconds)
 audObject.recordAudio()
