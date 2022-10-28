@@ -10,7 +10,6 @@ class record_audio():
     
     def __init__(self, chunk, record_secs):
         self.form_1 = pyaudio.paInt16 # 16-bit resolution
-        #self.form_1 = pyaudio.paFloat32 # 16-bit resolution  -- Try this to see if the output is in float format, so we can do operations on it
         self.chans = int(4) # 1 channel
         self.samp_rate = int(48000) # 44.1kHz sampling rate
         self.dev_index = int(1) # device index found by p.get_device_info_by_index(ii)
@@ -33,8 +32,9 @@ class record_audio():
         for ii in range(0,int((self.samp_rate/self.chunk)*self.record_secs)):
             data = self.stream.read(self.chunk)
             
-            data_float = np.frombuffer(data)
-            data_float = data_float/(1e-6 + np.max(np.abs(data_float)))
+            data_float = np.fromstring(data)
+            #data_float = np.dtype(data_float, 
+            #data_float = data_float/(1e-6 + np.max(np.abs(data_float)))
             frame2.append(np.fft.fft(np.fft.fft(data_float, n = int(self.chunk/2 + 1)), n = int(self.chunk)))
             #frames.append(data)
 
