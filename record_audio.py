@@ -1,6 +1,8 @@
 from src.utils import *
 import os
 
+os.system('git pull')
+
 chunk = 1024
 seconds = 10
 audObject = record_audio(chunk, seconds)
