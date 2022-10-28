@@ -3,6 +3,7 @@ import wave
 import scipy as sc
 import numpy as np
 import soundfile as sf
+import librosa as lb
 
 class record_audio():
     
@@ -33,7 +34,7 @@ class record_audio():
             
             data_float = np.frombuffer(data)
             data_float = data_float/(1e-6 + np.max(np.abs(data_float)))
-            frame2.append(np.fft.ifft(np.fft.fft(data_float)))
+            frame2.append(lb.ifft(lb.fft(data_float, int(self.chunk//2 + 1)), int(self.chunk)))
             #frames.append(data)
 
         print("finished recording")
