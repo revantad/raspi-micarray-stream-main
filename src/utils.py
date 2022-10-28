@@ -9,7 +9,7 @@ from scipy.fft import fft
 class record_audio():
     
     def __init__(self, chunk, record_secs):
-        self.form_1 = pyaudio.paInt32 # 16-bit resolution
+        self.form_1 = pyaudio.paFloat32 # 16-bit resolution
         self.chans = int(4) # 1 channel
         self.samp_rate = int(48000) # 44.1kHz sampling rate
         self.dev_index = int(1) # device index found by p.get_device_info_by_index(ii)
@@ -25,7 +25,7 @@ class record_audio():
     
     def recordAudio(self):
         print("recording")
-        #frames = []
+        
         frame2 = []
         error = []
 
@@ -33,16 +33,12 @@ class record_audio():
         for ii in range(0, int((self.samp_rate/self.chunk)*self.record_secs)):
             data = self.stream.read(self.chunk)
             
-            data_float = np.frombuffer(data)
+            data_float = np.frombuffer(data, dtype = np.float)
             ddat = np.fft.ifft(np.fft.fft(data_float, n = int(self.chunk//2 + 1)), n = int(2*self.chunk))
             
-            if ii == 1:
-                print(np.size(data_float))
-                
-            #frame2.append(np.fft.fft(np.fft.fft(data_float, n = int(self.chunk/2 + 1)), n = int(self.chunk)))
             error.append(np.real(ddat) - data_float)
             frame2.append(data_float)
-            #frames.append(data)
+        
 
         print("finished recording")
         
