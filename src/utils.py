@@ -42,6 +42,7 @@ class record_audio():
         
         self.frames = frames
         self.frames_dat = frames_dat
+        print(np.size(self.frames_dat))
         self.stopRecording()
         
 
