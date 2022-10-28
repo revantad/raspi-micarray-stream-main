@@ -32,8 +32,8 @@ class record_audio():
         # loop through stream and append audio chunks to frame array
         for ii in range(0, int((self.samp_rate/self.chunk)*self.record_secs)):
             data = self.stream.read(self.chunk)
-            print(data.shape())
-            
+            print(np.size(data))
+
             data_float = np.frombuffer(data)
             ddat = np.fft.ifft(np.fft.fft(data_float, n = int(self.chunk//2 + 1)), n = int(self.chunk))
             
