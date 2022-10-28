@@ -1,7 +1,7 @@
 import os
 from src.utils import *
 
-chunk = 128
+chunk = 512
 seconds = 10
 audObject = record_audio(chunk, seconds)
 audObject.recordAudio()
