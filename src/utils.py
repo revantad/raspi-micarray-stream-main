@@ -35,10 +35,10 @@ class record_audio():
             frames.append(data)
 
         print("finished recording")
-        print(frame2)
+        
         self.frames = frames
         self.stopRecording()
-        return frames
+        return frame2
 
     def stopRecording(self):
         # stop the stream, close it, and terminate the pyaudio instantiation
