@@ -30,7 +30,7 @@ class record_audio():
         for ii in range(0,int((self.samp_rate/self.chunk)*self.record_secs)):
             data = self.stream.read(self.chunk)
             if ii == 0:
-                print(np.fft.rfft(np.frombuffer(data)))
+                print(np.fft.fft(np.frombuffer(data)))
             frames.append(data)
 
         print("finished recording")
