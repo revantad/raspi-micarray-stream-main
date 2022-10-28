@@ -1,9 +1,10 @@
 import pyaudio
 import wave
-import scipy as sc
 import numpy as np
-import soundfile as sf
-import librosa as lb
+from scipy.fft import fft
+#import soundfile as sf
+#import librosa as lb
+#import scipy as sc
 
 class record_audio():
     
@@ -34,7 +35,7 @@ class record_audio():
             
             data_float = np.frombuffer(data)
             data_float = data_float/(1e-6 + np.max(np.abs(data_float)))
-            frame2.append(lb.stft(data_float, n_fft = int(self.chunk/2 + 1)))
+            frame2.append(np.fft.fft(data_float, n = int(self.chunk/2 + 1)))
             #frames.append(data)
 
         print("finished recording")
