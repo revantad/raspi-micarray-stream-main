@@ -31,6 +31,7 @@ class record_audio():
         for ii in range(0,int((self.samp_rate/self.chunk)*self.record_secs)):
             data = self.stream.read(self.chunk)
             
+            print('Recording and saving with fft, ifft')
             frame2.append(np.fft.ifft(np.fft.fft(np.frombuffer(data))))
             #frames.append(data)
 
