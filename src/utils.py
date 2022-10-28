@@ -7,7 +7,8 @@ import soundfile as sf
 class record_audio():
     
     def __init__(self, chunk, record_secs):
-        self.form_1 = pyaudio.paInt16 # 16-bit resolution
+        #self.form_1 = pyaudio.paInt16 # 16-bit resolution
+        self.form_1 = pyaudio.pFloat32 # 16-bit resolution  -- Try this to see if the output is in float format, so we can do operations on it
         self.chans = int(4) # 1 channel
         self.samp_rate = int(48000) # 44.1kHz sampling rate
         self.dev_index = int(1) # device index found by p.get_device_info_by_index(ii)
