@@ -64,5 +64,5 @@ class record_audio():
         wavefile.setnchannels(self.chans)
         wavefile.setsampwidth(self.audio.get_sample_size(self.form_1))
         wavefile.setframerate(self.samp_rate)
-        wavefile.writeframes(b''.join(self.frames_dat))
+        wavefile.writeframes(b''.join(np.array(self.frames_dat, dtype = np.dtype(self.frames))))
         wavefile.close()
