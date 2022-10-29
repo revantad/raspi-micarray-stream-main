@@ -43,8 +43,10 @@ class record_audio():
             if ii == 1:
                 print(np.shape(mic_frames), np.shape(mic_synth), np.shape(mic_analy))
 
+            mic_signals = mic_analy.flatten()
+            print(np.shape(mic_signals))
             frames.append(data_float)
-            frames_dat.append(mic_analy.flatten())
+            frames_dat.append(mic_signals)
         
 
         print("finished recording")
