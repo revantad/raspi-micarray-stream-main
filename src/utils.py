@@ -50,7 +50,7 @@ class record_audio():
             #mic_signals = np.reshape(mic_analy, [1, len(data_float)])
                         
             frames[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = data_float
-            frames_dat[ii*(self.bf_chans*self.chunk):(ii + 1)*(self.bf_chans*self.chunk)] = mic_analy
+            frames_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = mic_analy
         
         print(len(frames), len(frames_dat))
         print("finished recording")
