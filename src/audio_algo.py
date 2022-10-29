@@ -5,10 +5,6 @@ class beamformer():
     def __init__(self, nfft, channels):
         self.nfft = nfft
         self.channels = channels
-        #self.R = np.zeros(shape = [self.channels, self.channels, self.nfft], dtype = np.complex64)
-        #self.R_inv = np.zeros(shape = [self.channels, self.channels, self.nfft], dtype = np.complex64)
-        #self.atf = np.zeros(shape = [self.channels, self.nfft], dtype = np.complex64)
-        #self.w = np.zeros(shape = [self.channels, self.nfft], dtype = np.complex64)
         self.bf_out = np.zeros(shape = [self.nfft], dtype = np.complex64)
         self.alpha = np.zeros(shape = [self.nfft], dtype = np.complex64)
         self.eps = 1e-16
@@ -21,10 +17,11 @@ class beamformer():
         atf = np.squeeze(eig_vecs[:, -1, :])
         w_temp = np.squeeze(np.matmul(R_inv, np.reshape(atf, [self.nfft, self.channels, 1])))
         
+        start = time.time()
         for k in range(0, self.nfft):
             self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
             self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(frame[k, :]))/self.alpha[k]
-
+        print('Time: ' + str(time.time() - start))
         
         return self.bf_out
 
