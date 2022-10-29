@@ -31,12 +31,12 @@ class beamformer():
         #return self.bf_out    
     
     def process_vec(self, frame):
-        frame = np.reshape(self.channels, 1, self. nfft) # [channels x 1 x nfft]
+        frame = np.reshape(frame, [self.channels, 1, self. nfft]) # [channels x 1 x nfft]
         R = frame*np.transpose(np.conjugate(frame), [1, 0, 2]) # [nfft x channels x channels]
         R_inv = np.linalg.inv(R) # [nfft x channels x channels]
         eig_vals, eig_vecs = np.linalg.eigh(R)
         atf = np.squeeze(eigVecs[:, -1, :])
-        w_temp = np.matmul(R_inv, np.reshape(atf, self.nfft, self.channels, 1))
+        w_temp = np.matmul(R_inv, np.reshape(atf, [self.nfft, self.channels, 1]))
         
         for k in range(0, self.nfft):
             self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), w_temp)
