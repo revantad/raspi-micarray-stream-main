@@ -12,7 +12,7 @@ class record_audio():
         self.form_1 = pyaudio.paFloat32 # 16-bit resolution
         self.chans = int(4) # 1 channel
         self.samp_rate = int(48000) # 44.1kHz sampling rate
-        self.dev_index = int(0) # device index found by p.get_device_info_by_index(ii)
+        self.dev_index = int(1) # device index found by p.get_device_info_by_index(ii)
 
         self.chunk = chunk # 2^12 samples for buffer
         self.record_secs = record_secs # seconds to record
