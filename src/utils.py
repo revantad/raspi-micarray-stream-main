@@ -51,6 +51,7 @@ class record_audio():
                 print(np.shape(frames))
 
             
+            print(ii)
             #frames.append(data_float)
             #frames_dat.append(mic_signals)
             frames[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = data_float
