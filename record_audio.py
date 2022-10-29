@@ -3,7 +3,7 @@ from src.utils import *
 from src.audio_algo import *
 
 chunk = 128
-seconds = 10
+seconds = 1
 audObject = record_audio(chunk, seconds)
 audObject.recordAudio()
 audObject.stopRecording()
