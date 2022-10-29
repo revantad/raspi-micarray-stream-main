@@ -44,7 +44,7 @@ class beamformer():
             self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(frame[k, :]))/self.alpha[k]
 
         
-        return bf_out
+        return self.bf_out
 
 
 
