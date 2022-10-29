@@ -25,8 +25,8 @@ class beamformer():
             #    end = time.time()
             #    print('Time: ' + str(end - start))
 
-            max_index = np.argmax(eig_val)
-            self.atf[:, k] = eig_vec[max_index]
+            #max_index = np.argmax(eig_val)
+            self.atf[:, k] = eig_vec[-1]
             self.R_inv[:, :, k] = np.linalg.pinv(self.R[:, :, k])
             #print(np.shape(R), np.shape(R_inv), np.shape(atf))
             temp = np.matmul(self.R_inv[:, :, k], np.conjugate(self.atf[:, k]))
