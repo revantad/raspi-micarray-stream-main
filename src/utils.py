@@ -40,7 +40,7 @@ class record_audio():
             mic_frames = np.reshape(data_float, [self.chans, self.chunk])
             # mic_synth = np.fft.fft(mic_frames, axis = 1, n = int(self.chunk//2 + 1))
             mic_synth = np.fft.rfft(mic_frames, axis = 1, n = int(self.chunk))
-            mic_analy = np.fft.rifft(mic_synth, axis = 1, n = int(self.chunk))
+            mic_analy = np.fft.irfft(mic_synth, axis = 1, n = int(self.chunk))
             mic_signals = np.reshape(mic_analy, [1, len(data_float)])
                         
             frames[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = data_float
