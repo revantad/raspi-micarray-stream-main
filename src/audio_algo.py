@@ -8,11 +8,11 @@ class beamformer():
     def process(self, frame):
         # Initialize
 
-        R = np.zeros(shape = [self.chhanels, self.chhanels, self.nfft], dtype = np.complex64)
-        R_inv = np.zeros(shape = [self.chhanels, self.chhanels, self.nfft], dtype = np.complex64)
-        atf = np.zeros(shape = [self.chhanels, self.nfft], dtype = np.complex64)
-        w = np.zeros(shape = [self.chhanels, self.nfft], dtype = np.complex64)
-        bf_out = np.zeros(shape = [self.chhanels, self.nfft], dtype = np.complex64)
+        R = np.zeros(shape = [self.channels, self.channels, self.nfft], dtype = np.complex64)
+        R_inv = np.zeros(shape = [self.channels, self.channels, self.nfft], dtype = np.complex64)
+        atf = np.zeros(shape = [self.channels, self.nfft], dtype = np.complex64)
+        w = np.zeros(shape = [self.channels, self.nfft], dtype = np.complex64)
+        bf_out = np.zeros(shape = [self.channels, self.nfft], dtype = np.complex64)
         
         for k in range(0, self.nfft):
             R[:, :, k] = np.outer(mic_synth[:, k], np.conjugate(mic_synth[:, k]))
