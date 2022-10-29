@@ -46,9 +46,9 @@ class record_audio():
             ## Call audio algorithms/pipeline here
             # Dereverb --> Noise Suppress --> Beamformer
             
-            # bf_analy = self.bf.process(mic_analy)
-            # bf_synth = np.fft.irfft(bf_analy, axis = 0, n = self.chunk)
-            # bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = bf_synth
+            bf_analy = self.bf.process(mic_analy)
+            bf_synth = np.fft.irfft(bf_analy, axis = 0, n = self.chunk)
+            bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = bf_synth
 
             mic_synth = np.fft.irfft(mic_analy, axis = 1, n = self.chunk)
             mic_synth_flat = np.reshape(mic_synth, [1, len(data_float)])
@@ -85,4 +85,11 @@ class record_audio():
         wavefile.setsampwidth(self.audio.get_sample_size(self.form_1))
         wavefile.setframerate(self.samp_rate)
         wavefile.writeframes(self.mic_dat.tobytes())
+        wavefile.close()
+
+        wavefile = wave.open('audio_recordings/test_bf.wav','wb')
+        wavefile.setnchannels(self.bf_channel)
+        wavefile.setsampwidth(self.audio.get_sample_size(self.form_1))
+        wavefile.setframerate(self.samp_rate)
+        wavefile.writeframes(self.bf_dat.tobytes())
         wavefile.close()
