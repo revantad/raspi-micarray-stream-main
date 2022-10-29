@@ -9,12 +9,12 @@ from scipy.fft import fft
 class record_audio():
     
     def __init__(self, chunk, record_secs):
-        self.form_1 = pyaudio.paInt32 # 16-bit resolution
-        self.chans = int(4) # 1 channel
+        self.form_1 = pyaudio.paFloat32 # 16-bit resolution
+        self.chans = 1 # 1 channel
         self.samp_rate = int(48000) # 44.1kHz sampling rate
-        self.dev_index = int(1) # device index found by p.get_device_info_by_index(ii)
+        self.dev_index = 1 # device index found by p.get_device_info_by_index(ii)
 
-        self.chunk = int(chunk) # 2^12 samples for buffer
+        self.chunk = chunk # 2^12 samples for buffer
         self.record_secs = record_secs # seconds to record
         
         self.audio = pyaudio.PyAudio() # create pyaudio instantiation
@@ -31,11 +31,17 @@ class record_audio():
         
         # loop through stream and append audio chunks to frame array
         for ii in range(0, int((self.samp_rate/self.chunk)*self.record_secs)):
+            
             data = self.stream.read(self.chunk)
-            data_float = np.frombuffer(data, dtype = np.float)
-            dat = np.real(np.fft.ifft(np.fft.fft(data_float, n = int(self.chunk//2 + 1)), n = int(2*self.chunk)))
+            data_float = np.frombuffer(data, dtype = np.float32)
+
+            # Convert float data to matrix of size [channels x frame samples]
+            mic_frames = np.reshape(data_float, shape = [self.chans, self.chunk])
+            mic_synth = np.fft.fft(mic_frames, axis = 1, n = int(self.chunk//2 + 1))
+            mic_analy = np.fft.ifft(mic_synth, axis = 1, n = self.chunk)
+
             frames.append(data_float)
-            frames_dat.append(dat)
+            frames_dat.append(mic_analy.flatten())
         
 
         print("finished recording")
@@ -65,5 +71,5 @@ class record_audio():
         wavefile.setnchannels(self.chans)
         wavefile.setsampwidth(self.audio.get_sample_size(self.form_1))
         wavefile.setframerate(self.samp_rate)
-        wavefile.writeframes(b''.join(np.array(self.frames_dat, dtype = np.dtype(self.frames))))
+        wavefile.writeframes(b''.join(self.frames_dat))
         wavefile.close()
