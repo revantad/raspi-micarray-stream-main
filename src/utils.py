@@ -1,7 +1,7 @@
 import pyaudio
 import wave
 import numpy as np
-from multiMic import beamformer
+from audio_algo import *
 
 #import soundfile as sf
 #import librosa as lb

@@ -1,5 +1,6 @@
 import os
 from src.utils import *
+from src.audio_algo import *
 
 chunk = 512
 seconds = 10
