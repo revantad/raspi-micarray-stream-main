@@ -2,7 +2,7 @@ import os
 from src.utils import *
 from src.audio_algo import *
 
-chunk = 512
+chunk = 256
 seconds = 10
 audObject = record_audio(chunk, seconds)
 audObject.recordAudio()
