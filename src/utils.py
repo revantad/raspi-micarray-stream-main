@@ -29,8 +29,8 @@ class record_audio():
         #frames = []
         #frames_dat = []
 
-        frames = np.empty(self.chans*int((self.samp_rate/self.chunk)*self.record_secs), dtype = np.float32)
-        frames_dat = np.empty(self.chans*int((self.samp_rate/self.chunk)*self.record_secs), dtype = np.float32)
+        frames = np.zeros(int(self.chans*(self.samp_rate/self.chunk)*self.record_secs), dtype = np.float32)
+        frames_dat = np.zeros(int(self.chans*(self.samp_rate/self.chunk)*self.record_secs), dtype = np.float32)
         
         # loop through stream and append audio chunks to frame array
         for ii in range(0, int((self.samp_rate/self.chunk)*self.record_secs)):
