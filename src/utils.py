@@ -12,7 +12,7 @@ class record_audio():
         self.samp_rate = int(48000) # 44.1kHz sampling rate
         self.dev_index = int(1) # device index found by p.get_device_info_by_index(ii)
         self.chunk = chunk # 2^12 samples for buffer
-        self.nfft = int(self.chunk/2 + 1)
+        self.nfft = 513#int(self.chunk/2 + 1)
         self.bf_channel = int(1)
         self.record_secs = record_secs # seconds to record
         self.num_frames= self.samp_rate*self.record_secs//self.chunk
