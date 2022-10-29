@@ -33,8 +33,8 @@ class beamformer():
     def process_vec(self, frame):
         #frame = np.reshape(frame, [self.channels, 1, self. nfft]) # [channels x 1 x nfft]
 
-        print(np.shape(frame), np.shape(np.transpose(np.conjugate(frame), [1, 0, 2]))
-        print(np.shape(np.matmul(frame, np.transpose(np.conjugate(frame), [1, 0, 2])))
+        print(np.shape(frame), np.shape(np.transpose(np.conjugate(frame), [1, 0, 2])))
+        print(np.shape(np.matmul(frame, np.transpose(np.conjugate(frame), [1, 0, 2]))))
         
         R = frame*np.transpose(np.conjugate(frame), [1, 0, 2]) # [nfft x channels x channels]
         
