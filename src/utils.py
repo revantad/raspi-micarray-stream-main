@@ -41,7 +41,7 @@ class record_audio():
             data_float = np.frombuffer(data, dtype = np.float32)
             
             # Normalize
-            data_float = data_float/np.max(data_float)
+            data_float = 0.1*data_float/np.max(data_float)
 
             # Convert float data to matrix of size [channels x frame samples]
             mic_frames = np.reshape(data_float, [self.chans, self.chunk])
