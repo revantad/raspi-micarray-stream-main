@@ -18,7 +18,7 @@ class beamformer():
             eig_val, eig_vec = np.linalg.eig(R[:, :, k])
             max_index = np.argmax(eig_val)
             atf[:, k] = eig_vec[max_index]
-            R_inv[:, :, k] = np.linalg.inv(R[:, :, k])
+            R_inv[:, :, k] = np.linalg.pinv(R[:, :, k])
             #print(np.shape(R), np.shape(R_inv), np.shape(atf))
             alpha = np.matmul(atf[:, k], np.matmul(R_inv[:, :, k], np.conjugate(atf[:, k])))
             #print(alpha)
