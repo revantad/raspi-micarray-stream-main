@@ -39,15 +39,17 @@ class record_audio():
             mic_frames = np.reshape(data_float, [self.chans, self.chunk])
             mic_synth = np.fft.fft(mic_frames, axis = 1, n = int(self.chunk//2 + 1))
             mic_analy = np.fft.ifft(mic_synth, axis = 1, n = self.chunk)
+            mic_signals = mic_analy.flatten()
+            mic_signals = np.reshape(mic_signals, [1, len(data_float)])
 
             if ii == 1:
                 print(np.shape(mic_frames), np.shape(mic_synth), np.shape(mic_analy))
                 print(np.shape(mic_signals))
                 print(np.shape(frames))
 
-            mic_signals = mic_analy.flatten()
+            
             frames.append(data_float)
-            frames_dat.append(np.reshape(mic_signals, [1, len(data_float)]))
+            frames_dat.append(mic_signals)
         
 
         print("finished recording")
