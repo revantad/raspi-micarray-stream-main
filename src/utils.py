@@ -30,8 +30,8 @@ class record_audio():
         #frames = []
         #frames_dat = []
 
-        frames = np.zeros(int(4*self.samp_rate*self.record_secs), dtype = np.int16)
-        frames_dat = np.zeros(int(4*self.samp_rate*self.record_secs), dtype = np.int16)
+        frames = np.zeros(int(self.chans*self.samp_rate*self.record_secs), dtype = np.int16)
+        frames_dat = np.zeros(int(self.chans*self.samp_rate*self.record_secs), dtype = np.int16)
         
         print(len(frames), len(frames_dat), self.num_frames)
         # loop through stream and append audio chunks to frame array
@@ -40,9 +40,6 @@ class record_audio():
             data = self.stream.read(self.chunk)
             data_float = np.frombuffer(data, dtype = np.int16)
             
-            # Normalize
-            data_float = 0.1*data_float/np.max(data_float)
-
             # Convert float data to matrix of size [channels x frame samples]
             mic_frames = np.reshape(data_float, [self.chans, self.chunk])
             mic_synth = np.fft.fft(mic_frames, axis = 1, n = int(self.chunk//2 + 1))
