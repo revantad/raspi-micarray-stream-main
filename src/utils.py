@@ -37,7 +37,7 @@ class record_audio():
         for ii in range(0, self.num_frames):
             
             data = self.stream.read(self.chunk, exception_on_overflow = True)
-            data_float = np.frombuffer(data, dtype = np.int32)
+            data_float = np.frombuffer(data, dtype = np.int16)
             
             # Convert float data to matrix of size [channels x frame samples]
             mic_frames = np.reshape(data_float, [self.chans, self.chunk])
@@ -46,9 +46,9 @@ class record_audio():
             ## Call audio algorithms/pipeline here
             # Dereverb --> Noise Suppress --> Beamformer
             
-            bf_analy = self.bf.process(mic_analy)
-            bf_synth = np.fft.irfft(bf_analy, axis = 0, n = self.chunk)
-            bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = bf_synth
+            #bf_analy = self.bf.process(mic_analy)
+            #bf_synth = np.fft.irfft(bf_analy, axis = 0, n = self.chunk)
+            #bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = bf_synth
 
             mic_synth = np.fft.irfft(mic_analy, axis = 1, n = self.chunk)
             mic_synth_flat = np.reshape(mic_synth, [1, len(data_float)])
