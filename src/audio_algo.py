@@ -1,5 +1,6 @@
 import numpy as np
 import time
+import scipy as sc
 
 class beamformer():
     def __init__(self, nfft, channels):
@@ -20,7 +21,7 @@ class beamformer():
             
             if k == 0:
                 start = time.time()
-            eig_val, eig_vec = np.linalg.eig(self.R[:, :, k])
+            eig_val, eig_vec = sc.linalg.eig(self.R[:, :, k])
             if k == 0:
                 end = time.time()
                 print('Time: ' + str(end - start))
