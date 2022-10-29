@@ -2,7 +2,7 @@ import os
 from src.utils import *
 from src.audio_algo import *
 
-chunk = 1024*4
+chunk = 1024*5
 seconds = 1
 samp_rate = 48e3
 num_channels = 4
