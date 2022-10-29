@@ -22,7 +22,7 @@ class beamformer():
             self.R_inv[:, :, k] = np.linalg.pinv(self.R[:, :, k])
             #print(np.shape(R), np.shape(R_inv), np.shape(atf))
             temp = np.matmul(self.R_inv[:, :, k], np.conjugate(self.atf[:, k]))
-            self.alpha[k] = np.matmul(self.atf[:, k], temp, self.alpha[k])
+            self.alpha[k] = np.matmul(self.atf[:, k], temp)
             #print(alpha)
             self.w[:, k] = np.matmul(self.R_inv[:, :, k], np.conjugate(self.atf[:, k]), self.w[:, k])
             self.w[:, k] = self.w[:, k]/self.alpha[k]
