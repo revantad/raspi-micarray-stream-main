@@ -16,6 +16,7 @@ class record_audio():
         self.dev_index = int(1) # device index found by p.get_device_info_by_index(ii)
         self.chunk = chunk # 2^12 samples for buffer
         self.nfft = self.chunk//2 + 1
+        self.bf_channel = int(1)
         self.record_secs = record_secs # seconds to record
         self.num_frames = self.samp_rate*self.record_secs//self.chunk
         
@@ -26,7 +27,7 @@ class record_audio():
                     frames_per_buffer=self.chunk)
 
         # Initiate beamformer object
-        bf = beamformer          
+        bf = beamformer(self.nfft, self.chans)
     
     def recordAudio(self):
         print("recording")
@@ -47,9 +48,9 @@ class record_audio():
 
             ## Call audio algorithms/pipeline here
             # Dereverb --> Noise Suppress --> Beamformer
-            bf_out = bf.process()
+            bf_out = bf.process(mic_synth)
 
-            mic_analy = np.fft.irfft(mic_synth, axis = 1, n = int(self.chunk))
+            mic_analy = np.fft.irfft(bf_out, axis = 1, n = int(self.chunk))
             mic_signals = np.reshape(mic_analy, [1, len(data_float)])
                         
             frames[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = data_float
@@ -79,7 +80,7 @@ class record_audio():
         wavefile.close()
 
         wavefile = wave.open('audio_recordings/test_dat.wav','wb')
-        wavefile.setnchannels(self.chans)
+        wavefile.setnchannels(self.bf_channel)
         wavefile.setsampwidth(self.audio.get_sample_size(self.form_1))
         wavefile.setframerate(self.samp_rate)
         wavefile.writeframes(self.frames_dat.tobytes())
