@@ -1,7 +1,8 @@
 import pyaudio
 import wave
 import numpy as np
-from scipy.fft import fft
+from multiMic import beamformer
+
 #import soundfile as sf
 #import librosa as lb
 #import scipy as sc
@@ -23,6 +24,9 @@ class record_audio():
         self.stream = self.audio.open(format = self.form_1, rate = self.samp_rate, channels = self.chans, \
                     input_device_index = self.dev_index, input = True, \
                     frames_per_buffer=self.chunk)
+
+        # Initiate beamformer object
+        bf = beamformer          
     
     def recordAudio(self):
         print("recording")
@@ -40,6 +44,10 @@ class record_audio():
             mic_frames = np.reshape(data_float, [self.chans, self.chunk])
             # mic_synth = np.fft.fft(mic_frames, axis = 1, n = int(self.chunk//2 + 1))
             mic_synth = np.fft.rfft(mic_frames, axis = 1, n = int(self.chunk))
+
+            ## Call audio algorithms/pipeline here
+            # Dereverb --> Noise Suppress --> Beamform
+
             mic_analy = np.fft.irfft(mic_synth, axis = 1, n = int(self.chunk))
             mic_signals = np.reshape(mic_analy, [1, len(data_float)])
                         
