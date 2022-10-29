@@ -61,7 +61,6 @@ class record_audio():
             frames[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = data_float
             frames_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = bf_analy
         
-        print(len(frames), len(frames_dat))
         print("finished recording")
         
         self.frames = frames

@@ -2,8 +2,8 @@ import os
 from src.utils import *
 from src.audio_algo import *
 
-chunk = 1024
-seconds = 1
+chunk = 2048
+seconds = 2
 audObject = record_audio(chunk, seconds)
 audObject.recordAudio()
 audObject.stopRecording()
