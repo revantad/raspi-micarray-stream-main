@@ -6,10 +6,10 @@ from src.audio_algo import *
 
 class record_audio():
     
-    def __init__(self, chunk, record_secs):
+    def __init__(self, chunk, record_secs, samp_rate, num_channels):
         self.form_1 = pyaudio.paInt16 # 16-bit resolution
-        self.chans = int(4) # 1 channel
-        self.samp_rate = int(48000) # 44.1kHz sampling rate
+        self.chans = int(num_channels) # 1 channel
+        self.samp_rate = int(samp_rate) # 44.1kHz sampling rate
         self.dev_index = int(1) # device index found by p.get_device_info_by_index(ii)
         self.chunk = chunk # 2^12 samples for buffer
         self.nfft = int(self.chunk//2 + 1)

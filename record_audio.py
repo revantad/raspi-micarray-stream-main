@@ -4,7 +4,9 @@ from src.audio_algo import *
 
 chunk = 512
 seconds = 1
-audObject = record_audio(chunk, seconds)
+samp_rate = 16e3
+num_channels = 4
+audObject = record_audio(chunk, seconds, samp_rate, num_channels)
 
 start = time.time()
 audObject.recordAudio()
