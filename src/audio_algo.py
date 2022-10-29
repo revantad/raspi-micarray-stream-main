@@ -21,7 +21,7 @@ class beamformer():
             atf[:, k] = eig_vec[max_index]
             R_inv[:, :, k] = np.linalg.inv(R[:, :, k])
 
-            w[:, k] = np.matmul(np.R_inv[:, :, k], np.conjugate(atf[:, k]))/(np.matmul(atf[:, 1], np.matmul(R_inv, np.conjugate(atf[:, k]))))
+            w[:, k] = np.matmul(R_inv[:, :, k], np.conjugate(atf[:, k]))/(np.matmul(atf[:, 1], np.matmul(R_inv, np.conjugate(atf[:, k]))))
             bf_out[:, k] = np.matmul(w[:, k], frame[:, k])
     
         return bf_out    
