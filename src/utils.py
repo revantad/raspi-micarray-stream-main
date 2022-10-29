@@ -34,7 +34,7 @@ class record_audio():
         # loop through stream and append audio chunks to frame array
         for ii in range(0, self.num_frames):
             
-            data = self.stream.read(self.chunk, exception_on_overflow = False)
+            data = self.stream.read(self.chunk, exception_on_overflow = True)
             data_float = np.frombuffer(data, dtype = np.int16)
             
             # Convert float data to matrix of size [channels x frame samples]
