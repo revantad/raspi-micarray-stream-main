@@ -49,7 +49,7 @@ class record_audio():
             # bf_analy = self.bf.process(mic_analy)
             # bf_synth = np.fft.irfft(bf_analy, axis = 0, n = self.chunk)
             # bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = bf_synth
-            
+
             mic_synth = np.fft.irfft(mic_analy, axis = 1, n = self.chunk)
             mic_synth_flat = np.reshape(mic_synth, [1, len(data_float)])
                         

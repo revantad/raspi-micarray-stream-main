@@ -5,8 +5,11 @@ from src.audio_algo import *
 chunk = 2048
 seconds = 2
 audObject = record_audio(chunk, seconds)
+start = time.time()
 audObject.recordAudio()
 audObject.stopRecording()
+print('Time ' + str(time.time() - start))
+print('Requested Time ' + str(seconds))
 
 if not os.path.dirname('audio_recordings/'):
     os.makedirs('audio_recordings/')
