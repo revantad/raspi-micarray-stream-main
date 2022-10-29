@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 class beamformer():
     def __init__(self, nfft, channels):
@@ -16,7 +17,14 @@ class beamformer():
         # self.R = np.outer(frame, np.conjugate(frame), axis = 2)
         for k in range(0, self.nfft):
             self.R[:, :, k] = np.outer(frame[:, k], np.conjugate(frame[:, k]), self.R[:, :, k])
+            
+            if k == 0:
+                start = time.time()
             eig_val, eig_vec = np.linalg.eig(self.R[:, :, k])
+            if k == 0:
+                end = time.time()
+                print('Time: ' + str(end - start))
+
             max_index = np.argmax(eig_val)
             self.atf[:, k] = eig_vec[max_index]
             self.R_inv[:, :, k] = np.linalg.pinv(self.R[:, :, k])
