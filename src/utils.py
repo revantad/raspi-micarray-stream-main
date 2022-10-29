@@ -37,7 +37,7 @@ class record_audio():
         for ii in range(0, self.num_frames):
             
             data = self.stream.read(self.chunk, exception_on_overflow = True)
-            data_float = np.frombuffer(data, dtype = np.int16)
+            data_float = np.frombuffer(data, dtype = np.float32)
             
             # Convert float data to matrix of size [channels x frame samples]
             mic_frames = np.reshape(data_float, [self.chans, self.chunk])
