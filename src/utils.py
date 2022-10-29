@@ -55,7 +55,7 @@ class record_audio():
             frames[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = data_float
             mic_dat[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = mic_synth_flat
 
-            if i == 0:
+            if ii == 0:
                 print('Frame size: ' + str(self.chunk))
                 print('Length of data: ' + str(len(data)))
                 print('Size of float data: ' + str(np.shape(data_float)))
