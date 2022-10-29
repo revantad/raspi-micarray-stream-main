@@ -69,7 +69,7 @@ class record_audio():
         # save the audio frames as .wav file
         wavefile = wave.open(name,'wb')
         wavefile.setnchannels(self.chans)
-        wavefile.setsampwidth(self.audio.get_sample_size(self.form_1))
+        wavefile.setsampwidth(self.audio.get_sample_size(self.chunk))
         wavefile.setframerate(self.samp_rate)
         wavefile.writeframes(b''.join(self.frames))
         wavefile.close()
