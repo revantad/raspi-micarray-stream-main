@@ -16,6 +16,7 @@ class record_audio():
 
         self.chunk = chunk # 2^12 samples for buffer
         self.record_secs = record_secs # seconds to record
+        self.num_frames = self.samp_rate*self.record_secs//self.chunk
         
         self.audio = pyaudio.PyAudio() # create pyaudio instantiation
         # create pyaudio stream
@@ -34,7 +35,7 @@ class record_audio():
         
         print(len(frames), len(frames_dat))
         # loop through stream and append audio chunks to frame array
-        for ii in range(0, int((self.samp_rate/self.chunk)*self.record_secs) - 1):
+        for ii in range(0, self.num_frames):
             
             data = self.stream.read(self.chunk)
             data_float = np.frombuffer(data, dtype = np.float32)
