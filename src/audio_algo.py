@@ -8,7 +8,7 @@ class beamformer():
         self.R_inv = np.zeros(shape = [self.channels, self.channels, self.nfft], dtype = np.complex64)
         self.atf = np.zeros(shape = [self.channels, self.nfft], dtype = np.complex64)
         self.w = np.zeros(shape = [self.channels, self.nfft], dtype = np.complex64)
-        self.bf_out = np.zeros(shape = [self.channels, self.nfft], dtype = np.complex64)
+        self.bf_out = np.zeros(shape = [self.nfft], dtype = np.complex64)
         self.alpha = np.zeros(shape = [self.nfft], dtype = np.complex64)
 
     def process(self, frame):
@@ -23,7 +23,7 @@ class beamformer():
             self.alpha[k] = np.matmul(self.atf[:, k], np.matmul(self.R_inv[:, :, k], np.conjugate(self.atf[:, k])))
             #print(alpha)
             self.w[:, k] = np.matmul(self.R_inv[:, :, k], np.conjugate(self.atf[:, k]))/self.alpha[k]
-            self.bf_out[:, k] = np.inner(self.w[:, k], np.conjugate(frame[:, k]))
+            self.bf_out[k] = np.inner(self.w[:, k], np.conjugate(frame[:, k]))
             if k == 0:
                 print(np.shape(self.bf_out))
         return self.bf_out    
