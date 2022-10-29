@@ -28,7 +28,7 @@ class beamformer():
          #   self.w[:, k] = self.w[:, k]/self.alpha[k]
          #   self.bf_out[k] = np.inner(self.w[:, k], np.conjugate(frame[:, k]))
         
-        return self.bf_out    
+        #return self.bf_out    
     
     def process_vec(self, frame):
         frame = np.reshape(self.channels, 1, self. nfft) # [channels x 1 x nfft]
