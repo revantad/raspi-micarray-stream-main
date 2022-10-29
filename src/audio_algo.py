@@ -43,7 +43,7 @@ class beamformer():
         w_temp = np.matmul(R_inv, np.reshape(atf, [self.nfft, self.channels, 1]))
         
         for k in range(0, self.nfft):
-            self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), w_temp)
+            self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
             self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(frame))/alpha[k]
 
         
