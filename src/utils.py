@@ -43,7 +43,7 @@ class record_audio():
             # Convert float data to matrix of size [channels x frame samples]
             mic_frames = np.reshape(data_float, [self.chans, self.chunk])
             print(np.shape(mic_frames))
-            mic_analy = np.fft.rfft(mic_frames, axis = 1, n = self.nfft)
+            mic_analy = np.fft.fft(mic_frames, axis = 1, n = self.nfft)
             print(np.shape(mic_analy))
             ## Call audio algorithms/pipeline here
             # Dereverb --> Noise Suppress --> Beamformer
