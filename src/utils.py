@@ -1,6 +1,7 @@
 import pyaudio
 import wave
 import numpy as np
+import time.time()
 from src.audio_algo import *
 
 class record_audio():
@@ -39,13 +40,19 @@ class record_audio():
             
             # Convert float data to matrix of size [channels x frame samples]
             mic_frames = np.reshape(data_float, [self.chans, self.chunk])
+            
             # mic_synth = np.fft.fft(mic_frames, axis = 1, n = int(self.chunk//2 + 1))
             mic_synth = np.fft.fft(mic_frames, axis = 1, n = self.nfft)
             
             ## Call audio algorithms/pipeline here
             # Dereverb --> Noise Suppress --> Beamformer
+            if ii == 0:
+                start_time = time.time()
+
             bf_out = self.bf.process(mic_synth)
-            
+            if ii == 0:
+                end_time = time.time()
+                print('Time: ' + str(end_time - start_time))
             bf_analy = np.fft.irfft(bf_out, axis = 0, n = int(self.chunk))
             # mic_signals = np.reshape(_analy, [1, len(data_float)])
                         
