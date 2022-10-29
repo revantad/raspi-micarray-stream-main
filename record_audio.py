@@ -2,7 +2,7 @@ import os
 from src.utils import *
 
 chunk = 512
-seconds = 10
+seconds = 1
 audObject = record_audio(chunk, seconds)
 audObject.recordAudio()
 audObject.stopRecording()
