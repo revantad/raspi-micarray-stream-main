@@ -37,8 +37,7 @@ class beamformer():
         eig_vals, eig_vecs = np.linalg.eigh(R)
         atf = np.squeeze(eig_vecs[:, -1, :])
         w_temp = np.squeeze(np.matmul(R_inv, np.reshape(atf, [self.nfft, self.channels, 1])))
-        print(np.shape(w_temp), np.shape(atf))
-
+        
         for k in range(0, self.nfft):
             self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
             self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(frame[k, :]))/self.alpha[k]
