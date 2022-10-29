@@ -47,10 +47,10 @@ class record_audio():
             bf_out = self.bf.process(mic_synth)
 
             mic_analy = np.fft.irfft(bf_out, axis = 1, n = int(self.chunk))
-            mic_signals = np.reshape(mic_analy, [1, len(data_float)//4])
+            #mic_signals = np.reshape(mic_analy, [1, len(data_float)])
                         
             frames[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = data_float
-            frames_dat[ii*(self.bf_chans*self.chunk):(ii + 1)*(self.bf_chans*self.chunk)] = mic_signals
+            frames_dat[ii*(self.bf_chans*self.chunk):(ii + 1)*(self.bf_chans*self.chunk)] = mic_analy
         
         print(len(frames), len(frames_dat))
         print("finished recording")
