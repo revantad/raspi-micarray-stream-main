@@ -34,7 +34,7 @@ class beamformer():
         frame = np.reshape(frame, [self.nfft, 1, self. channels]) # [channels x 1 x nfft]
 
         print(np.shape(frame))
-        print(np.shape(np.reshape(np.conjugate(frame), [, 0, 2])))
+        print(np.shape(np.reshape(np.conjugate(frame), [1, 0, 2])))
         
         R = frame*np.transpose(np.conjugate(frame), [1, 0, 2]) # [nfft x channels x channels]
         
