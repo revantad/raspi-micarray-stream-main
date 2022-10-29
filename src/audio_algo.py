@@ -12,25 +12,8 @@ class beamformer():
         self.bf_out = np.zeros(shape = [self.nfft], dtype = np.complex64)
         self.alpha = np.zeros(shape = [self.nfft], dtype = np.complex64)
         self.eps = 1e-16
-    #def process(self, frame):
-    #    # Initialize
-    #    for k in range(0, self.nfft):
-    #        self.R[:, :, k] = np.outer(frame[:, k], np.conjugate(frame[:, k]), self.R[:, :, k])
-    #        eig_val, eig_vec = np.linalg.eigh(self.R[:, :, k])
-     #       
-     #       self.atf[:, k] = eig_vec[-1]
-     #       self.R_inv[:, :, k] = np.linalg.pinv(self.R[:, :, k])
-     #       #print(np.shape(R), np.shape(R_inv), np.shape(atf))
-      #      temp = np.matmul(self.R_inv[:, :, k], np.conjugate(self.atf[:, k]))
-       #     self.alpha[k] = np.matmul(self.atf[:, k], temp)
-        #    #print(alpha)
-         #   self.w[:, k] = np.matmul(self.R_inv[:, :, k], np.conjugate(self.atf[:, k]), self.w[:, k])
-         #   self.w[:, k] = self.w[:, k]/self.alpha[k]
-         #   self.bf_out[k] = np.inner(self.w[:, k], np.conjugate(frame[:, k]))
-        
-        #return self.bf_out    
     
-    def process_vec(self, frame):
+    def process(self, frame):
         frame = frame.T # nfft x channels
         R = np.matmul(np.reshape(frame, [self.nfft, self.channels, 1]), np.reshape(np.conjugate(frame), [self.nfft, 1, self.channels])) # [nfft x channels x channels]
         R_inv = np.linalg.pinv(self.eps + R) # [nfft x channels x channels]
