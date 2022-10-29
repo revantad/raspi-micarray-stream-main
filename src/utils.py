@@ -47,7 +47,7 @@ class record_audio():
 
             mic_signals = mic_analy.flatten()
             frames.append(data_float)
-            frames_dat.append(np.reshape(mic_signals, [1, len(data_float)])
+            frames_dat.append(np.reshape(mic_signals, [1, len(data_float)]))
         
 
         print("finished recording")
