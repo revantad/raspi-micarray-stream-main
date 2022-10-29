@@ -46,11 +46,11 @@ class record_audio():
             # Dereverb --> Noise Suppress --> Beamformer
             bf_out = self.bf.process(mic_synth)
             
-            mic_analy = np.fft.irfft(bf_out, axis = 1, n = int(self.chunk))
-            #mic_signals = np.reshape(mic_analy, [1, len(data_float)])
+            bf_analy = np.fft.irfft(bf_out, axis = 0, n = int(self.chunk))
+            # mic_signals = np.reshape(_analy, [1, len(data_float)])
                         
             frames[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = data_float
-            frames_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = mic_analy
+            frames_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = bf_analy
         
         print(len(frames), len(frames_dat))
         print("finished recording")
