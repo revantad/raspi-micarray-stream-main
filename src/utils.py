@@ -30,8 +30,9 @@ class record_audio():
         print("recording")
         
         frames = np.zeros(int(self.chans*self.samp_rate*self.record_secs), dtype = np.int16)
-        frames_dat = np.zeros(int(self.bf_channel*self.samp_rate*self.record_secs), dtype = np.int16)
-        
+        mic_dat = np.zeros(int(self.chans*self.samp_rate*self.record_secs), dtype = np.int16)
+        bf_dat = np.zeros(int(self.bf_channel*self.samp_rate*self.record_secs), dtype = np.int16)
+
         # loop through stream and append audio chunks to frame array
         for ii in range(0, self.num_frames):
             
@@ -40,31 +41,25 @@ class record_audio():
             
             # Convert float data to matrix of size [channels x frame samples]
             mic_frames = np.reshape(data_float, [self.chans, self.chunk])
-            
-            # mic_synth = np.fft.fft(mic_frames, axis = 1, n = int(self.chunk//2 + 1))
-            mic_synth = np.fft.fft(mic_frames, axis = 1, n = self.nfft)
+            mic_analy = np.fft.fft(mic_frames, axis = 1, n = self.nfft)
             
             ## Call audio algorithms/pipeline here
             # Dereverb --> Noise Suppress --> Beamformer
-            if ii == 0:
-                start_time = time.time()
+            
+            # bf_out = self.bf.process(mic_analy)
+            # bf_synth = np.fft.irfft(bf_out, axis = 0, n = int(self.chunk))
 
-            bf_out = self.bf.process(mic_synth)
-            
-            if ii == 0:
-                end_time = time.time()
-                print('Time: ' + str(end_time - start_time))
-            
-            bf_analy = np.fft.irfft(bf_out, axis = 0, n = int(self.chunk))
-            # mic_signals = np.reshape(_analy, [1, len(data_float)])
+            mic_synth = np.reshape(_analy, [1, len(data_float)])
                         
             frames[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = data_float
-            frames_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = bf_analy
+            mic_dat[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = mic_synth
+            bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = bf_synth
         
         print("finished recording")
         
         self.frames = frames
-        self.frames_dat = frames_dat
+        self.bf_dat = bf_dat
+        self.mic_dat = mic_dat
         self.stopRecording()
         
 
@@ -84,8 +79,8 @@ class record_audio():
         wavefile.close()
 
         wavefile = wave.open('audio_recordings/test_dat.wav','wb')
-        wavefile.setnchannels(self.bf_channel)
+        wavefile.setnchannels(self.chans)
         wavefile.setsampwidth(self.audio.get_sample_size(self.form_1))
         wavefile.setframerate(self.samp_rate)
-        wavefile.writeframes(self.frames_dat.tobytes())
+        wavefile.writeframes(self.mic_dat.tobytes())
         wavefile.close()
