@@ -2,9 +2,9 @@ import os
 from src.utils import *
 from src.audio_algo import *
 
-chunk = 512
+chunk = 4096
 seconds = 1
-samp_rate = 44.1e3
+samp_rate = 48e3
 num_channels = 4
 audObject = record_audio(chunk, seconds, samp_rate, num_channels)
 
