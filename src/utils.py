@@ -46,13 +46,15 @@ class record_audio():
             
             ## Call audio algorithms/pipeline here
             # Dereverb --> Noise Suppress --> Beamformer
-            if ii == 0:
-                start_time = time.time()
+            #if ii == 0:
+            #    start_time = time.time()
 
             bf_out = self.bf.process(mic_synth)
-            if ii == 0:
-                end_time = time.time()
-                print('Time: ' + str(end_time - start_time))
+            
+            #if ii == 0:
+            #    end_time = time.time()
+             #   print('Time: ' + str(end_time - start_time))
+            
             bf_analy = np.fft.irfft(bf_out, axis = 0, n = int(self.chunk))
             # mic_signals = np.reshape(_analy, [1, len(data_float)])
                         
