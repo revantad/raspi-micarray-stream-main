@@ -49,7 +49,7 @@ class record_audio():
             if ii == 0:
                 start_time = time.time()
 
-            bf_out = self.bf.process_vec(mic_synth)
+            bf_out = self.bf.process(mic_synth)
             
             if ii == 0:
                 end_time = time.time()
