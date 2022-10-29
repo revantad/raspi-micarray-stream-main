@@ -69,14 +69,15 @@ class record_audio():
         # save the audio frames as .wav file
         wavefile = wave.open(name,'wb')
         wavefile.setnchannels(self.chans)
-        wavefile.setsampwidth(self.audio.get_sample_size(np.float32))
+        wavefile.setsampwidth(np.float32)
         wavefile.setframerate(self.samp_rate)
         wavefile.writeframes(b''.join(self.frames))
         wavefile.close()
 
         wavefile = wave.open('audio_recordings/test_dat.wav','wb')
         wavefile.setnchannels(self.chans)
-        wavefile.setsampwidth(self.audio.get_sample_size(np.float32))
+        #wavefile.setsampwidth(self.audio.get_sample_size(np.float32))
+        wavefile.setsampwidth(np.float32)
         wavefile.setframerate(self.samp_rate)
         wavefile.writeframes(b''.join(self.frames_dat))
         wavefile.close()
