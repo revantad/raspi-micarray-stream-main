@@ -40,6 +40,9 @@ class record_audio():
             mic_synth = np.fft.fft(mic_frames, axis = 1, n = int(self.chunk//2 + 1))
             mic_analy = np.fft.ifft(mic_synth, axis = 1, n = self.chunk)
 
+            if ii == 1:
+                print(mic_frames.shape(), mic_synth.shape(), mic_analy.shape())
+
             frames.append(data_float)
             frames_dat.append(mic_analy.flatten())
         
@@ -48,7 +51,6 @@ class record_audio():
         
         self.frames = frames
         self.frames_dat = frames_dat
-        print(np.size(self.frames_dat[0][0]), np.size(self.frames[0][0]))
         self.stopRecording()
         
 
