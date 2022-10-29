@@ -24,4 +24,5 @@ class beamformer():
             #print(alpha)
             self.w[:, k] = np.matmul(self.R_inv[:, :, k], np.conjugate(self.atf[:, k]))/self.alpha[k]
             self.bf_out[k] = np.inner(self.w[:, k], np.conjugate(frame[:, k]))
+        
         return self.bf_out    
