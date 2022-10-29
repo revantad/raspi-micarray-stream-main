@@ -1,11 +1,7 @@
 import pyaudio
 import wave
 import numpy as np
-from audio_algo import *
-
-#import soundfile as sf
-#import librosa as lb
-#import scipy as sc
+from src.audio_algo import *
 
 class record_audio():
     
@@ -18,7 +14,7 @@ class record_audio():
         self.nfft = self.chunk//2 + 1
         self.bf_channel = int(1)
         self.record_secs = record_secs # seconds to record
-        self.num_frames = self.samp_rate*self.record_secs//self.chunk
+        self.num_frames= self.samp_rate*self.record_secs//self.chunk
         
         self.audio = pyaudio.PyAudio() # create pyaudio instantiation
         # create pyaudio stream
@@ -27,7 +23,7 @@ class record_audio():
                     frames_per_buffer=self.chunk)
 
         # Initiate beamformer object
-        bf = beamformer(self.nfft, self.chans)
+        self.bf = beamformer(self.nfft, self.chans)
     
     def recordAudio(self):
         print("recording")
@@ -48,7 +44,7 @@ class record_audio():
 
             ## Call audio algorithms/pipeline here
             # Dereverb --> Noise Suppress --> Beamformer
-            bf_out = bf.process(mic_synth)
+            bf_out = self.bf.process(mic_synth)
 
             mic_analy = np.fft.irfft(bf_out, axis = 1, n = int(self.chunk))
             mic_signals = np.reshape(mic_analy, [1, len(data_float)])
