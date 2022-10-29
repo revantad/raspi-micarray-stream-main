@@ -14,8 +14,8 @@ class record_audio():
         self.chans = int(4) # 1 channel
         self.samp_rate = int(48000) # 44.1kHz sampling rate
         self.dev_index = int(1) # device index found by p.get_device_info_by_index(ii)
-
         self.chunk = chunk # 2^12 samples for buffer
+        self.nfft = self.chunk//2 + 1
         self.record_secs = record_secs # seconds to record
         self.num_frames = self.samp_rate*self.record_secs//self.chunk
         
@@ -43,10 +43,11 @@ class record_audio():
             # Convert float data to matrix of size [channels x frame samples]
             mic_frames = np.reshape(data_float, [self.chans, self.chunk])
             # mic_synth = np.fft.fft(mic_frames, axis = 1, n = int(self.chunk//2 + 1))
-            mic_synth = np.fft.rfft(mic_frames, axis = 1, n = int(self.chunk))
+            mic_synth = np.fft.fft(mic_frames, axis = 1, n = int(self.chunk))
 
             ## Call audio algorithms/pipeline here
-            # Dereverb --> Noise Suppress --> Beamform
+            # Dereverb --> Noise Suppress --> Beamformer
+            bf_out = bf.process()
 
             mic_analy = np.fft.irfft(mic_synth, axis = 1, n = int(self.chunk))
             mic_signals = np.reshape(mic_analy, [1, len(data_float)])
