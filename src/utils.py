@@ -2,7 +2,7 @@ import pyaudio
 import wave
 import numpy as np
 import time
-#from src.audio_algo import *
+from src.audio_algo import *
 
 class record_audio():
     
