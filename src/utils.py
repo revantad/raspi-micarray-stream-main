@@ -39,7 +39,7 @@ class record_audio():
             
             data = self.stream.read(self.chunk, exception_on_overflow = True)
             data_float = np.frombuffer(data, dtype = np.int16)
-            data_float2 = np.frombuffer(data, dtype = np.float16)
+            data_float2 = data_float/np.max(data_float)
             
             print(data_float2)
             print(data_float2.shape)
