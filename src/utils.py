@@ -51,7 +51,7 @@ class record_audio():
             #print(bf_mic_analy)
             bf_analy = self.bf.process(bf_mic_analy)
             #print(bf_analy)
-            bf_synth = np.real(np.fft.ifft(bf_analy, axis = 0, n = self.chunk))
+            bf_synth = np.real(np.fft.irfft(bf_analy, axis = 0, n = self.chunk))
             #print(bf_synth)
             bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = bf_synth
 
