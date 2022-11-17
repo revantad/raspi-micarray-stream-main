@@ -18,9 +18,14 @@ class beamformer():
         w_temp = np.squeeze(np.matmul(R_inv, np.reshape(atf, [self.nfft, self.channels, 1])))
         
         start = time.time()
-        for k in range(0, self.nfft):
-            #self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
+        #for k in range(0, self.nfft):
+        #    self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
+        #    self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(frame[k, :]))/self.alpha[k]
+
+        for k, atf_curr in enumerate(0, atf):
+            self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf_curr)
             self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(frame[k, :]))/self.alpha[k]
+
         print('Time: ' + str(time.time() - start))
         
         return self.bf_out
