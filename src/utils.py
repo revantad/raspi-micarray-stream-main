@@ -56,7 +56,7 @@ class record_audio():
             #print(bf_synth)
             bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = max_val*bf_synth
 
-            mic_synth = np.real(np.fft.irfft(mic_analy, axis = 1, n = self.chunk))
+            mic_synth = np.real(np.fft.ifft(bf_mic_analy, axis = 1, n = self.chunk))
             mic_synth_flat = np.reshape(mic_synth, [1, len(data_float)])
             frames[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = data_float
             mic_dat[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = mic_synth_flat
