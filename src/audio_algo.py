@@ -3,7 +3,7 @@ import time
 
 class beamformer():
     def __init__(self, nfft, channels):
-        self.nfft = 2*nfft
+        self.nfft = nfft
         self.channels = channels
         self.bf_out = np.zeros(shape = [self.nfft], dtype = np.complex64)
         self.alpha = np.zeros(shape = [self.nfft], dtype = np.complex64)
