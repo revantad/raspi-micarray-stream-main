@@ -54,7 +54,6 @@ class record_audio():
             
             bf_analy = self.bf.process(bf_mic_analy)
             bf_analy = np.concatenate([bf_analy, np.flipud(bf_analy)])
-            print(bf_analy.shape)
             bf_synth = np.real(np.fft.ifft(bf_analy, axis = 0, n = self.chunk))
             
             bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = max_val*bf_synth
