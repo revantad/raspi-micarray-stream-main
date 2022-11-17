@@ -48,13 +48,11 @@ class record_audio():
             bf_synth = np.fft.irfft(bf_analy, axis = 0, n = self.chunk)
             bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = bf_synth
 
-            start = time.time()
             mic_synth = np.real(np.fft.irfft(mic_analy, axis = 1, n = self.chunk))
             mic_synth_flat = np.reshape(mic_synth, [1, len(data_float)])
             frames[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = data_float
             mic_dat[ii*(self.chans*self.chunk):(ii + 1)*(self.chans*self.chunk)] = mic_synth_flat
-            print('Time: ' + str(time.time() - start))
-
+            
             if ii == 0:
                 print('Frame size: ' + str(self.chunk))
                 print('Length of data: ' + str(len(data)))
