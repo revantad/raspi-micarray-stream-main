@@ -16,7 +16,7 @@ class beamformer():
         eig_vals, eig_vecs = np.linalg.eigh(R)
         atf = np.squeeze(eig_vecs[:, -1, :])
         w_temp = np.squeeze(np.matmul(R_inv, np.reshape(atf, [self.nfft, self.channels, 1])))
-        print(w_temp))
+        print(w_temp)
 
         #start = time.time()
         #for k in range(0, self.nfft):
