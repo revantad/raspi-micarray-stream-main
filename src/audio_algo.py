@@ -24,7 +24,8 @@ class beamformer():
 
         self.alpha = w_temp[:, 0]*np.conjugate(atf[:, 0]) + w_temp[:, 1]*np.conjugate(atf[:, 1]) + w_temp[:, 2]*np.conjugate(atf[:, 2]) + w_temp[:, 3]*np.conjugate(atf[:, 3])
         #self.bf_out = np.multiply(np.multiply(w_temp[:, 0], np.conjugate(frame[:, 0])) + np.multiply(w_temp[:, 1], np.conjugate(frame[:, 1])) + np.multiply(w_temp[:, 2], np.conjugate(frame[:, 2])) + np.multiply(w_temp[:, 3], np.conjugate(frame[:, 3])), 1/( self.eps + self.alpha))
-        self.bf_out = np.multiply(w_temp[:, 0], np.conjugate(frame[:, 0])) + np.multiply(w_temp[:, 1], np.conjugate(frame[:, 1])) + np.multiply(w_temp[:, 2], np.conjugate(frame[:, 2])) + np.multiply(w_temp[:, 3], np.conjugate(frame[:, 3]))
+        #self.bf_out = np.multiply(w_temp[:, 0], np.conjugate(frame[:, 0])) + np.multiply(w_temp[:, 1], np.conjugate(frame[:, 1])) + np.multiply(w_temp[:, 2], np.conjugate(frame[:, 2])) + np.multiply(w_temp[:, 3], np.conjugate(frame[:, 3]))
+        self.bf_out = w_temp[:, 0]*np.conjugate(frame[:, 0]) + w_temp[:, 1]*np.conjugate(frame[:, 1]) + w_temp[:, 2]*np.conjugate(frame[:, 2]) + w_temp[:, 3]*np.conjugate(frame[:, 3])
 
         #print('Time: ' + str(time.time() - start))
         
