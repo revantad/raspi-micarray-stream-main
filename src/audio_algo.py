@@ -15,9 +15,9 @@ class beamformer():
         R_inv = np.linalg.pinv(self.eps + R) # [nfft x channels x channels]
         eig_vals, eig_vecs = np.linalg.eigh(R)
         atf = np.squeeze(eig_vecs[:, -1, :])
-        print(atf)
         w_temp = np.squeeze(np.matmul(R_inv, np.reshape(atf, [self.nfft, self.channels, 1])))
-        
+        print(w_temp))
+
         #start = time.time()
         #for k in range(0, self.nfft):
         #    self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
