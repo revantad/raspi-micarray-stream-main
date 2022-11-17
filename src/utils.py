@@ -25,7 +25,7 @@ class record_audio():
                     frames_per_buffer=self.chunk)
 
         # Initiate beamformer object
-        self.bf = beamformer(2*self.nfft, self.chans)
+        self.bf = beamformer(self.nfft, self.chans)
     
     def recordAudio(self):
         print("recording")
@@ -48,7 +48,7 @@ class record_audio():
 
             ## Call audio algorithms/pipeline here
             bf_frames = np.reshape(data_float2, [self.chans, self.chunk])
-            bf_mic_analy = np.fft.fft(bf_frames, axis = 1, n = 2*self.nfft)
+            bf_mic_analy = np.fft.fft(bf_frames, axis = 1, n = self.nfft//2)
             #print(bf_mic_analy)
             bf_analy = self.bf.process(bf_mic_analy)
             #print(bf_analy)
