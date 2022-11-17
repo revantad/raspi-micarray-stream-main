@@ -17,7 +17,7 @@ class beamformer():
         atf = np.squeeze(eig_vecs[:, -1, :])
         w_temp = np.squeeze(np.matmul(R_inv, np.reshape(atf, [self.nfft, self.channels, 1])))
         
-        start = time.time()
+        #start = time.time()
         #for k in range(0, self.nfft):
         #    self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
         #    self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(frame[k, :]))/self.alpha[k]
@@ -25,7 +25,7 @@ class beamformer():
         self.alpha = np.multiply(np.conjugate(w_temp[:, 0]), atf[:, 0]) + np.multiply(np.conjugate(w_temp[:, 1]), atf[:, 1]) + np.multiply(np.conjugate(w_temp[:, 2]), atf[:, 2]) + np.multiply(np.conjugate(w_temp[:, 3]), atf[:, 3])
         self.bf_out = np.multiply(np.multiply(w_temp[:, 0], np.conjugate(frame[:, 0])) + np.matmul(w_temp[:, 1], np.conjugate(frame[:, 1])) + np.matmul(w_temp[:, 2], np.conjugate(frame[:, 2])) + np.matmul(w_temp[:, 3], np.conjugate(frame[:, 3])), 1/self.alpha)
 
-        print('Time: ' + str(time.time() - start))
+        #print('Time: ' + str(time.time() - start))
         
         return self.bf_out
 
