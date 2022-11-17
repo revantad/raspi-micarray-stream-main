@@ -7,7 +7,7 @@ class beamformer():
         self.channels = channels
         self.bf_out = np.zeros(shape = [self.nfft], dtype = np.complex64)
         self.alpha = np.zeros(shape = [self.nfft], dtype = np.complex64)
-        self.eps = 1e-9
+        self.eps = 1e-16
     
     def process(self, frame):
         frame = frame.T # nfft x channels
