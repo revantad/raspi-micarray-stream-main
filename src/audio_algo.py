@@ -12,12 +12,13 @@ class beamformer():
     def process(self, frame):
         frame = frame.T # nfft x channels
         R = np.matmul(np.reshape(frame, [self.nfft, self.channels, 1]), np.reshape(np.conjugate(frame), [self.nfft, 1, self.channels])) # [nfft x channels x channels]
-        R_inv = np.linalg.pinv(self.eps + R) # [nfft x channels x channels]
+        R_inv = np.linalg.inv(self.eps + R) # [nfft x channels x channels]
         eig_vals, eig_vecs = np.linalg.eigh(R)
         atf = np.squeeze(eig_vecs[:, -1, :])
         w_temp = np.squeeze(np.matmul(R_inv, np.reshape(atf, [self.nfft, self.channels, 1])))
+        w_temp = w_temp/max(w_temp)
         
-        start = time.time()
+        #start = time.time()
         #for k in range(0, self.nfft):
         #    self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
         #    self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(frame[k, :]))/self.alpha[k]
@@ -25,7 +26,7 @@ class beamformer():
         self.alpha = np.multiply(np.conjugate(w_temp[:, 0]), atf[:, 0]) + np.multiply(np.conjugate(w_temp[:, 1]), atf[:, 1]) + np.multiply(np.conjugate(w_temp[:, 2]), atf[:, 2]) + np.multiply(np.conjugate(w_temp[:, 3]), atf[:, 3])
         self.bf_out = np.multiply(np.multiply(w_temp[:, 0], np.conjugate(frame[:, 0])) + np.multiply(w_temp[:, 1], np.conjugate(frame[:, 1])) + np.multiply(w_temp[:, 2], np.conjugate(frame[:, 2])) + np.multiply(w_temp[:, 3], np.conjugate(frame[:, 3])), 1/self.alpha)
 
-        print('Time: ' + str(time.time() - start))
+        #print('Time: ' + str(time.time() - start))
         
         return self.bf_out
 
