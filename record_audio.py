@@ -3,7 +3,7 @@ import time
 from src.utils import *
 from src.audio_algo import *
 
-chunk = 4096
+chunk = 2**14
 seconds = 3
 samp_rate = 48e3
 num_channels = 4
