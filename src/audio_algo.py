@@ -13,7 +13,7 @@ class beamformer():
         frame = frame.T # nfft x channels
         R = np.matmul(np.reshape(frame, [self.nfft, self.channels, 1]), np.reshape(np.conjugate(frame), [self.nfft, 1, self.channels])) # [nfft x channels x channels]
         R_inv = np.linalg.pinv(self.eps + R) # [nfft x channels x channels]
-        eig_vals, eig_vecs = np.linalg.eigh(R)
+        _, eig_vecs = np.linalg.eigh(R)
         atf = np.squeeze(eig_vecs[:, :, -1])
         w_temp = np.squeeze(np.matmul(R_inv, np.reshape(atf, [self.nfft, self.channels, 1])))
         
