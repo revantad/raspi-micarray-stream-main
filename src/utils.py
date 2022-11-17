@@ -45,17 +45,17 @@ class record_audio():
             # Convert float data to matrix of size [channels x frame samples]
             mic_frames = np.reshape(data_float, [self.chans, self.chunk])
             mic_analy = np.fft.rfft(mic_frames, axis = 1, n = 2*self.nfft - 1)
-            print(mic_analy.shape)
+            
             ## Call audio algorithms/pipeline here
             bf_frames = np.reshape(data_float2, [self.chans, self.chunk])
             bf_mic_analy = np.fft.fft(bf_frames, axis = 1, n = 2*self.nfft - 1)
             bf_mic_analy = bf_mic_analy[:, :self.nfft]
-            print(bf_mic_analy.shape)
-            #print(bf_mic_analy)
+            
+            
             bf_analy = self.bf.process(bf_mic_analy)
-            #print(bf_analy)
+            
             bf_synth = np.real(np.fft.ifft(bf_analy, axis = 0, n = self.chunk))
-            #print(bf_synth)
+            
             bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = max_val*bf_synth
 
             mic_synth = np.real(np.fft.ifft(bf_mic_analy, axis = 1, n = self.chunk))
