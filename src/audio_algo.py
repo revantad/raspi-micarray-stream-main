@@ -22,7 +22,7 @@ class beamformer():
         #    self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
         #    self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(frame[k, :]))/self.alpha[k]
 
-        self.alpha = np.matmul(np.conjugate(w_temp, atf, axis = 0))
+        self.alpha = np.matmul(np.conjugate(w_temp), atf, axis = 0)
 
         print('Time: ' + str(time.time() - start))
         
