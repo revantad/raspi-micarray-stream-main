@@ -20,7 +20,7 @@ class beamformer():
         start = time.time()
         for k in range(0, self.nfft):
             self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
-            self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(frame[k, :]))/self.alpha[k]
+            #self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(frame[k, :]))/self.alpha[k]
         print('Time: ' + str(time.time() - start))
         
         return self.bf_out
