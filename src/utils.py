@@ -45,7 +45,7 @@ class record_audio():
             mic_analy = np.fft.rfft(mic_frames, axis = 1, n = 2*self.nfft - 1)
 
             ## Call audio algorithms/pipeline here
-            bf_mic_analy = np.fft.fft(mic_frames/(2**16), axis = 1, n = 2*self.nfft - 1)
+            bf_mic_analy = np.fft.rfft(mic_frames/(2**16), axis = 1, n = 2*self.nfft - 1)
             bf_analy = self.bf.process(bf_mic_analy)
             bf_synth = np.real(np.fft.irfft(bf_analy, axis = 0, n = self.chunk))
             bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = bf_synth
