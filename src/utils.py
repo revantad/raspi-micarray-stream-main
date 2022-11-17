@@ -39,7 +39,8 @@ class record_audio():
             
             data = self.stream.read(self.chunk, exception_on_overflow = True)
             data_float = np.frombuffer(data, dtype = np.int16)
-            data_float2 = data_float/np.max(data_float)
+            max_val = np.max(data_float)
+            data_float2 = data_float/max_val
             
             # Convert float data to matrix of size [channels x frame samples]
             mic_frames = np.reshape(data_float, [self.chans, self.chunk])
@@ -51,9 +52,9 @@ class record_audio():
             #print(bf_mic_analy)
             bf_analy = self.bf.process(bf_mic_analy)
             #print(bf_analy)
-            bf_synth = np.real(np.fft.irfft(bf_analy, axis = 0, n = self.chunk))
+            bf_synth = np.real(np.fft.ifft(bf_analy, axis = 0, n = self.chunk))
             #print(bf_synth)
-            bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = bf_synth
+            bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = max_val*bf_synth
 
             mic_synth = np.real(np.fft.irfft(mic_analy, axis = 1, n = self.chunk))
             mic_synth_flat = np.reshape(mic_synth, [1, len(data_float)])
