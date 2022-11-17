@@ -45,7 +45,7 @@ class record_audio():
             mic_analy = np.fft.rfft(mic_frames, axis = 1, n = 2*self.nfft - 1)
 
             ## Call audio algorithms/pipeline here
-            mic_frame_float = struct.unpack('i', data)
+            mic_frame_float = struct.unpack('h', data)
             print(mic_frame_float)
             print(mic_frame_float.shape)
             mic_analy_bf = np.fft.fft(mic_frame_float, axis = 1, n = 2*self.nfft - 1)
