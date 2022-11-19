@@ -25,7 +25,7 @@ class beamformer():
 
         # Compute SPP
         Rn_inv = np.linalg.pinv(self.eps + self.Rn) # [nfft x channels x channels] --> This R is the spatial correlation of the mic noise (Rnn in STFT domain)
-        gamma = np.matmul(np.reshape(frame, [self.nfft, self.channels, 1]), np.reshape(np.conjugate(frame), [self.nfft, 1, self.channels])) + (1 - alpha_y)*self.alpha_y
+        
         # Apply speech presence probability and compute Rx and Rn
         # Recursively estimate Ry, Rn, and spp
 
