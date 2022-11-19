@@ -30,7 +30,7 @@ class beamformer():
         return self.bf_out
 
     def process2(self, frame):
-        frame = frame[].T # nfft x channels
+        frame = frame.T # nfft x channels
         R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
         R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
         atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
