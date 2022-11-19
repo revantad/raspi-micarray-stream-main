@@ -52,7 +52,7 @@ class record_audio():
             bf_mic_analy = bf_mic_analy[:, :self.nfft]
             
             
-            bf_analy = self.bf.process(bf_mic_analy)
+            bf_analy = self.bf.process2(bf_mic_analy)
             bf_analy = np.concatenate([bf_analy, np.flipud(bf_analy)])
             bf_synth = np.real(np.fft.ifft(bf_analy, axis = 0, n = self.chunk))
             
