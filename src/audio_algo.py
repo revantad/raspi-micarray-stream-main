@@ -29,5 +29,28 @@ class beamformer():
         
         return self.bf_out
 
+    def process2(self, frame):
+        frame = frame[].T # nfft x channels
+        R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+        w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+
+        for k in range(0, self.nfft):
+            curr_frame = frame[k, :]
+            R[k, :, :] = curr_frame.T * curr_frame # [nfft x channels x channels]
+            R_inv[k, :, :] = np.linalg.pinv(self.eps + R[k, :, :]) # [nfft x channels x channels]
+            _, eig_vecs = np.linalg.eigh(np.squeeze(R[k, :, :]))
+            atf[k, :] = eig_vecs[0, :]
+
+            w_temp[k, :] = np.squeeze(R_inv[k, :, :])*atf[k, :]
+            
+            self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
+            self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(curr_frame))/(self.eps + self.alpha[k])
+
+        #print('Time: ' + str(time.time() - start))
+        
+        return self.bf_out
+
 
 
