@@ -43,10 +43,10 @@ class beamformer():
             _, eig_vecs = np.linalg.eigh(np.squeeze(R[k, :, :]))
             atf[k, :] = eig_vecs[0, :]
 
-            w_temp[k, :] = np.matmul(R_inv[k, :, :], atf[k, :], out = w_temp[k, :])
+            w_temp[k, :] = np.matmul(R_inv[k, :, :], atf[k, :], out = w_temp)
             
-            self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :], out = self.alpha[k])
-            self.bf_out[k] = np.matmul(np.matmul(w_temp[k, :], np.conjugate(curr_frame)), 1/(self.eps + self.alpha[k]), out=self.bf_out[k])
+            self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :], out = self.alpha)
+            self.bf_out[k] = np.matmul(np.matmul(w_temp[k, :], np.conjugate(curr_frame)), 1/(self.eps + self.alpha[k]), out=self.bf_out)
 
         #print('Time: ' + str(time.time() - start))
         
