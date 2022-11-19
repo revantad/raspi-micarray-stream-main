@@ -30,15 +30,15 @@ class record_audio():
     def recordAudio(self):
         print("recording")
         
-        frames = np.zeros(int(self.chans*self.samp_rate*self.record_secs), dtype = np.int)
-        mic_dat = np.zeros(int(self.chans*self.samp_rate*self.record_secs), dtype = np.int)
-        bf_dat = np.zeros(int(self.bf_channel*self.samp_rate*self.record_secs), dtype = np.int)
+        frames = np.zeros(int(self.chans*self.samp_rate*self.record_secs), dtype = np.int8)
+        mic_dat = np.zeros(int(self.chans*self.samp_rate*self.record_secs), dtype = np.int8)
+        bf_dat = np.zeros(int(self.bf_channel*self.samp_rate*self.record_secs), dtype = np.int8)
 
         # loop through stream and append audio chunks to frame array
         for ii in range(0, self.num_frames):
             
             data = self.stream.read(self.chunk, exception_on_overflow = False)
-            data_float = np.frombuffer(data, dtype = np.int)
+            data_float = np.frombuffer(data, dtype = np.int8)
             max_val = np.max(data_float)
             data_float2 = data_float/max_val
             
