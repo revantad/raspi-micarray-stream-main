@@ -43,7 +43,7 @@ class beamformer():
             _, eig_vecs = np.linalg.eigh(np.squeeze(R[k, :, :]))
             atf[k, :] = eig_vecs[0, :]
 
-            w_temp[k, :] = np.squeeze(R_inv[k, :, :])*atf[k, :]
+            w_temp[k, :] = np.matmul(R_inv[k, :, :], atf[k, :])
             
             self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
             self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(curr_frame))/(self.eps + self.alpha[k])
