@@ -52,11 +52,11 @@ class record_audio():
             bf_mic_analy = bf_mic_analy[:, :self.nfft]
             
             
-            bf_analy = self.bf.process2(bf_mic_analy)
-            bf_analy = np.concatenate([bf_analy, np.flipud(bf_analy)])
-            bf_synth = np.real(np.fft.ifft(bf_analy, axis = 0, n = self.chunk))
+            #bf_analy = self.bf.process2(bf_mic_analy)
+            #bf_analy = np.concatenate([bf_analy, np.flipud(bf_analy)])
+            #bf_synth = np.real(np.fft.ifft(bf_analy, axis = 0, n = self.chunk))
             
-            bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = max_val*bf_synth
+            #bf_dat[ii*(self.bf_channel*self.chunk):(ii + 1)*(self.bf_channel*self.chunk)] = max_val*bf_synth
 
             mic_synth = np.real(np.fft.ifft(bf_mic_analy, axis = 1, n = self.chunk))
             mic_synth_flat = np.reshape(max_val*mic_synth, [1, len(data_float)])
