@@ -24,7 +24,7 @@ class beamformer_multi():
         for k in range(0, self.nfft):
             curr_frame = frame[k, :]
             R[k, :, :] = curr_frame.T * curr_frame # [nfft x channels x channels]
-            R_inv[k, :, :] = np.linalg.inv(self.eps + R[k, :, :]) # [nfft x channels x channels]
+            R_inv[k, :, :] = np.linalg.pinv(self.eps + R[k, :, :]) # [nfft x channels x channels]
             _, eig_vecs = np.linalg.eigh(np.squeeze(R[k, :, :]))
             atf[k, :] = eig_vecs[0, :]
             
