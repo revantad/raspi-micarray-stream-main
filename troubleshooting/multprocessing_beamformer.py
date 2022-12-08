@@ -21,18 +21,24 @@ class beamformer_multi():
 
         start = time.time()
 
-        for k in range(0, self.nfft):
-            curr_frame = frame[k, :]
-            R[k, :, :] = curr_frame.T * curr_frame # [nfft x channels x channels]
-            R_inv[k, :, :] = np.linalg.pinv(self.eps + R[k, :, :]) # [nfft x channels x channels]
-            _, eig_vecs = np.linalg.eigh(np.squeeze(R[k, :, :]))
-            atf[k, :] = eig_vecs[0, :]
-                        
-            w_temp[k, :] = np.matmul(R_inv[k, :, :], atf[k, :], out = w_temp[k, :])
-            self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
-            self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(curr_frame))/(self.eps + self.alpha[k])
-
+        processes = [multiprocessing.Process(target=task) for _ in range(4)]
+        [process.start() for process in processes]
+        [process.join() for process in processes]
         print('Time: ' + str(time.time() - start))
+
+
+        def task():
+            for k in range(0, self.nfft):
+                curr_frame = frame[k, :]
+                R[k, :, :] = curr_frame.T * curr_frame # [nfft x channels x channels]
+                R_inv[k, :, :] = np.linalg.pinv(self.eps + R[k, :, :]) # [nfft x channels x channels]
+                _, eig_vecs = np.linalg.eigh(np.squeeze(R[k, :, :]))
+                atf[k, :] = eig_vecs[0, :]
+                            
+                w_temp[k, :] = np.matmul(R_inv[k, :, :], atf[k, :], out = w_temp[k, :])
+                self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
+                self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(curr_frame))/(self.eps + self.alpha[k])
+
         
         return self.bf_out
 
