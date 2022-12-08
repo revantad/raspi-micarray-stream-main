@@ -20,34 +20,30 @@ class beamformer_multi():
         
         # init
         frame = frame.T # nfft x channels
-        R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
-        R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
-        atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
-        w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+        self.R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        self.R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        self.atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+        self.w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
 
 
         num_workers = os.cpu_count()
-        inp = list(range(0,10))
 
         with multiprocessing.Pool(num_workers) as p:
-            _ = p.map(self.task(R, R_inv, atf, w_temp, frame), inp)
-            p.close()
-            p.join()
-        print('Time: ' + str(time.time() - start))
+            for out in p.map(self.task(frame), range(0, self.nfft)):
+                self.bf_outp[k] = out
 
+        print('Time: ' + str(time.time() - start))
         return self.bf_out
 
-    def task(self, R, R_inv, atf, w_temp, frame):
-        
-        for k in range(0, self.nfft):
-            curr_frame = frame[k, :]
-            R[k, :, :] = curr_frame.T * curr_frame # [nfft x channels x channels]
-            R_inv[k, :, :] = np.linalg.pinv(self.eps + R[k, :, :]) # [nfft x channels x channels]
-            _, eig_vecs = np.linalg.eigh(np.squeeze(R[k, :, :]))
-            atf[k, :] = eig_vecs[0, :]
+    def task(self, k, frame):
+        curr_frame = frame[k, :]
+        self.R[k, :, :] = curr_frame.T * curr_frame # [nfft x channels x channels]
+        self.R_inv[k, :, :] = np.linalg.pinv(self.eps + self.R[k, :, :]) # [nfft x channels x channels]
+        _, eig_vecs = np.linalg.eigh(np.squeeze(self.R[k, :, :]))
+        self.atf[k, :] = eig_vecs[0, :]
                             
-            w_temp[k, :] = np.matmul(R_inv[k, :, :], atf[k, :], out = w_temp[k, :])
-            self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
-            self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(curr_frame))/(self.eps + self.alpha[k])
+        self.w_temp[k, :] = np.matmul(self.R_inv[k, :, :], self.atf[k, :])
+        self.alpha[k] = np.matmul(np.conjugate(self.w_temp[k, :]), self.atf[k, :])
+        bf_out = np.matmul(self.w_temp[k, :], np.conjugate(curr_frame))/(self.eps + self.alpha[k])
 
-
+        return bf_out
