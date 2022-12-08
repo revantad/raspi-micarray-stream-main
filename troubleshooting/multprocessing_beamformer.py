@@ -27,14 +27,14 @@ class beamformer_multi():
 
 
         num_workers = os.cpu_count()
-        processes = [threading.Thread(target=self.task(R, R_inv, atf, w_temp, self, frame)) for _ in range(num_workers)]
+        processes = [threading.Thread(target=self.task(R, R_inv, atf, w_temp, frame)) for _ in range(num_workers)]
         [process.start() for process in processes]
         [process.join() for process in processes]
         print('Time: ' + str(time.time() - start))
 
         return self.bf_out
 
-    def task(R, R_inv, atf, w_temp, self, frame):
+    def task(self, R, R_inv, atf, w_temp, frame):
         
         for k in range(0, self.nfft):
             curr_frame = frame[k, :]
