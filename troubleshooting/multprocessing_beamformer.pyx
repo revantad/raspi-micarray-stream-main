@@ -27,12 +27,11 @@ class beamformer_multi():
         #self.atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
         #self.w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
 
-        cdef double R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
-        cdef double R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
-        cdef double atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
-        cdef double w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
-        cdef double bf_out = np.zeros(shape = [self.nfft])
-        cdef double alpha = np.zeros(shape = [self.nfft], dtype = np.complex)
+        cdef np.ndarray[np.complex128_t, ndim=3] R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        cdef np.ndarray[np.complex128_t, ndim=3] R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        cdef np.ndarray[np.complex128_t, ndim=2] atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+        cdef np.ndarray[np.complex128_t, ndim=2] w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+        cdef np.ndarray[np.complex128_t, ndim=1] alpha = np.zeros(shape = [self.nfft], dtype = np.complex)
         cdef double c_frame = frame
 
         cdef int NFFT  = self.nfft
