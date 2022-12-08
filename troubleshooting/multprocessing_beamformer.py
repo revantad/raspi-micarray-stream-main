@@ -15,7 +15,7 @@ class beamformer_multi():
     def process2(self, frame):
         start = time.time()
 
-        processes = [multiprocessing.Process(target=task(frame)) for _ in range(4)]
+        processes = [multiprocessing.Process(target=self.task(frame)) for _ in range(4)]
         [process.start() for process in processes]
         [process.join() for process in processes]
         print('Time: ' + str(time.time() - start))
