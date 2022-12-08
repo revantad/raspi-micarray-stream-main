@@ -38,7 +38,7 @@ class beamformer_multi():
         cdef int ind = 0
 
         for ind in range(NFFT):
-            bf_out[ind] = self.task2(ind, c_frame, R, R_inv, atf, w_temp, alpha)
+            bf_out[ind] = task2(ind, c_frame, R, R_inv, atf, w_temp, alpha)
 
         self.bf_out = bf_out
         #print('Time: ' + str(time.time() - start))
@@ -94,17 +94,17 @@ class beamformer_multi():
 
         return bf_out, k
 
-    def task2(k, frame, R, R_inv, atf, w_temp, alpha):
-        cdef double eps = 1e-9
+def task2(k, frame, R, R_inv, atf, w_temp, alpha):
+    cdef double eps = 1e-9
 
-        curr_frame = frame[k, :]
-        R[k, :, :] = curr_frame.T * curr_frame # [nfft x channels x channels]
-        R_inv[k, :, :] = np.linalg.pinv(eps + R[k, :, :]) # [nfft x channels x channels]
-        _, eig_vecs = np.linalg.eigh(np.squeeze(R[k, :, :]))
-        atf[k, :] = eig_vecs[0, :]
+    curr_frame = frame[k, :]
+    R[k, :, :] = curr_frame.T * curr_frame # [nfft x channels x channels]
+    R_inv[k, :, :] = np.linalg.pinv(eps + R[k, :, :]) # [nfft x channels x channels]
+    _, eig_vecs = np.linalg.eigh(np.squeeze(R[k, :, :]))
+    atf[k, :] = eig_vecs[0, :]
                             
-        w_temp[k, :] = np.matmul(R_inv[k, :, :], atf[k, :])
-        alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
-        bf_out = np.matmul(w_temp[k, :], np.conjugate(curr_frame))/(eps + alpha[k])
+    w_temp[k, :] = np.matmul(R_inv[k, :, :], atf[k, :])
+    alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
+    bf_out = np.matmul(w_temp[k, :], np.conjugate(curr_frame))/(eps + alpha[k])
 
-        return bf_out
+    return bf_out
