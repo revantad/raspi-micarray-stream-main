@@ -5,6 +5,7 @@ import threading
 import os
 import cython
 from Cython.Build import cythonize
+cimport numpy as np
 
 import concurrent.futures
 
