@@ -29,8 +29,9 @@ class beamformer_multi():
             atf[k, :] = eig_vecs[0, :]
 
             w_temp[k, :] = np.matmul(R_inv[k, :, :], atf[k, :], out = w_temp[k, :])
-                
-            self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
+            bb = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
+            self.alpha[k] = bb
+            print(bb.shape)
             aa = np.matmul(np.matmul(w_temp[k, :], np.conjugate(curr_frame)), 1/(self.eps + self.alpha[k]))
             print(aa.shape)
             self.bf_out[k] = aa
