@@ -35,7 +35,7 @@ class beamformer_multi():
         cdef double complex c_frame = frame
 
         cdef int NFFT  = self.nfft
-        cdef int ind
+        #cdef int ind
 
         for ind in range(NFFT):
             bf_out[ind] = task2(ind, c_frame, R, R_inv, atf, w_temp, alpha)
