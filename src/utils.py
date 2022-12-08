@@ -38,7 +38,7 @@ class record_audio():
         # loop through stream and append audio chunks to frame array
         for ii in range(0, self.num_frames):
             
-            data = self.stream.read(self.chunk/2, exception_on_overflow = True)
+            data = self.stream.read(self.chunk, exception_on_overflow = True)
             data_float = np.frombuffer(data, dtype = np.int16)
             max_val = np.max(data_float)
             data_float2 = data_float/max_val
