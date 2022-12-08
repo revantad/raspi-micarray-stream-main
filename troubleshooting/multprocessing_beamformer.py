@@ -21,20 +21,19 @@ class beamformer_multi():
 
         start = time.time()
 
-        with concurrent.futures.ProcessPoolExecutor() as executer:
-            for k in range(0, self.nfft):
-                curr_frame = frame[k, :]
-                R[k, :, :] = curr_frame.T * curr_frame # [nfft x channels x channels]
-                R_inv[k, :, :] = np.linalg.pinv(self.eps + R[k, :, :]) # [nfft x channels x channels]
-                _, eig_vecs = np.linalg.eigh(np.squeeze(R[k, :, :]))
-                atf[k, :] = eig_vecs[0, :]
+        for k in range(0, self.nfft):
+            curr_frame = frame[k, :]
+            R[k, :, :] = curr_frame.T * curr_frame # [nfft x channels x channels]
+            R_inv[k, :, :] = np.linalg.pinv(self.eps + R[k, :, :]) # [nfft x channels x channels]
+            _, eig_vecs = np.linalg.eigh(np.squeeze(R[k, :, :]))
+            atf[k, :] = eig_vecs[0, :]
 
-                w_temp[k, :] = np.matmul(R_inv[k, :, :], atf[k, :], out = w_temp[k, :])
+            w_temp[k, :] = np.matmul(R_inv[k, :, :], atf[k, :], out = w_temp[k, :])
                 
-                self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
-                aa = np.matmul(np.matmul(w_temp[k, :], np.conjugate(curr_frame)), 1/(self.eps + self.alpha[k]))
-                print(size(aa))
-                self.bf_out[k] = aa
+            self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
+            aa = np.matmul(np.matmul(w_temp[k, :], np.conjugate(curr_frame)), 1/(self.eps + self.alpha[k]))
+            print(size(aa))
+            self.bf_out[k] = aa
 
         print('Time: ' + str(time.time() - start))
         
