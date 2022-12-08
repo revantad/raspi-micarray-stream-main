@@ -28,7 +28,7 @@ class beamformer_multi():
 
         num_workers = os.cpu_count()
 
-        with multiprocessing.Pool(num_workers) as p:
+        with multiprocessing.Pool(24) as p:
             for out, ind in p.map(self.task, range(0, self.nfft)):
                 self.bf_out[ind] = out
 
