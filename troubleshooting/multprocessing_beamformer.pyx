@@ -34,10 +34,10 @@ class beamformer_multi():
         cdef double complex alpha = np.zeros(shape = [self.nfft], dtype = np.complex)
         cdef int NFFT  = self.nfft
         cdef int ind
-        cdef double complex frame = self.frame
+        cdef double complex c_frame = frame
 
         for ind in range(0, NFFT):
-            bf_out[ind], _ = self.task2(ind, frame, R, R_inv, atf, w_temp, alpha)
+            bf_out[ind], _ = self.task2(ind, c_frame, R, R_inv, atf, w_temp, alpha)
 
         self.bf_out = bf_out
         #print('Time: ' + str(time.time() - start))
