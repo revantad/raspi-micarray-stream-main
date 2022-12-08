@@ -16,6 +16,30 @@ class beamformer_multi():
         self.alpha = np.zeros(shape = [self.nfft], dtype = np.complex)
         self.eps = 1e-16
     
+    def process_cython(self, frame):
+        #start = time.time()
+        
+        # init
+        self.frame = frame.T # nfft x channels
+        self.R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        self.R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        self.atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+        self.w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+
+        cdef double complex R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        cdef double complex R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        cdef double complex atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+        cdef double complex w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+        cdef double complex bf_out = np.zeros(shape = [self.nfft], dtype = np.complex)
+        cdef double complex alpha = np.zeros(shape = [self.nfft], dtype = np.complex)
+        
+        for ind in range(0, self.nfft):
+                bf_out[ind], _ = self.task2(ind, frame, R, R_inv, atf, w_temp, alpha)
+
+        self.bf_out = bf_out
+        #print('Time: ' + str(time.time() - start))
+        return self.bf_out
+    
     def process(self, frame):
         #start = time.time()
         
@@ -63,5 +87,20 @@ class beamformer_multi():
         self.w_temp[k, :] = np.matmul(self.R_inv[k, :, :], self.atf[k, :])
         self.alpha[k] = np.matmul(np.conjugate(self.w_temp[k, :]), self.atf[k, :])
         bf_out = np.matmul(self.w_temp[k, :], np.conjugate(curr_frame))/(self.eps + self.alpha[k])
+
+        return bf_out, k
+
+    def task2(k, frame, R, R_inv, atf, w_temp, alpha):
+        cdef double eps = 1e-9
+
+        curr_frame = frame[k, :]
+        R[k, :, :] = curr_frame.T * curr_frame # [nfft x channels x channels]
+        R_inv[k, :, :] = np.linalg.pinv(eps + R[k, :, :]) # [nfft x channels x channels]
+        _, eig_vecs = np.linalg.eigh(np.squeeze(R[k, :, :]))
+        atf[k, :] = eig_vecs[0, :]
+                            
+        w_temp[k, :] = np.matmul(R_inv[k, :, :], atf[k, :])
+        alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
+        bf_out = np.matmul(w_temp[k, :], np.conjugate(curr_frame))/(eps + alpha[k])
 
         return bf_out, k
