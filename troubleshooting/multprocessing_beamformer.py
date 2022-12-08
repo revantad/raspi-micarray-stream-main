@@ -27,9 +27,10 @@ class beamformer_multi():
 
 
         num_workers = os.cpu_count()
-        processes = [threading.Thread(target=self.task(R, R_inv, atf, w_temp, frame)) for _ in range(num_workers)]
-        [process.start() for process in processes]
-        [process.join() for process in processes]
+        with multiprocessing.Pool(num_workers) as p:
+            _ = p.map(self.task(R, R_inv, atf, w_temp, frame))
+            p.close()
+            p.join()
         print('Time: ' + str(time.time() - start))
 
         return self.bf_out
