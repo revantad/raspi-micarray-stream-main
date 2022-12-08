@@ -2,6 +2,7 @@ import numpy as np
 import time
 import multiprocessing
 import threading
+import os
 
 import concurrent.futures
 
@@ -16,20 +17,25 @@ class beamformer_multi():
     
     def process2(self, frame):
         start = time.time()
+        
+        # init
+        frame = frame.T # nfft x channels
+        R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+        w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
 
-        processes = [threading.Thread(target=self.task(frame)) for _ in range(4)]
+
+        num_workers = os.cpu_count()
+        processes = [threading.Thread(target=self.task(R, R_inv, atf, w_temp, self, frame)) for _ in range(num_workers)]
         [process.start() for process in processes]
         [process.join() for process in processes]
         print('Time: ' + str(time.time() - start))
 
         return self.bf_out
 
-    def task(self, frame):
-        frame = frame.T # nfft x channels
-        R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
-        R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
-        atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
-        w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+    def task(R, R_inv, atf, w_temp, self, frame):
+        
         for k in range(0, self.nfft):
             curr_frame = frame[k, :]
             R[k, :, :] = curr_frame.T * curr_frame # [nfft x channels x channels]
