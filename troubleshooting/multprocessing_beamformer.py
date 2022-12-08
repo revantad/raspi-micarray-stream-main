@@ -19,7 +19,7 @@ class beamformer_multi():
         start = time.time()
         
         # init
-        frame = frame.T # nfft x channels
+        self.frame = frame.T # nfft x channels
         self.R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
         self.R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
         self.atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
@@ -29,14 +29,14 @@ class beamformer_multi():
         num_workers = os.cpu_count()
 
         with multiprocessing.Pool(num_workers) as p:
-            for out in p.map(self.task(frame), range(0, self.nfft)):
-                self.bf_outp[k] = out
+            for out, k in p.map(self.task(k), range(0, self.nfft)):
+                self.bf_out[k] = out
 
         print('Time: ' + str(time.time() - start))
         return self.bf_out
 
-    def task(self, k, frame):
-        curr_frame = frame[k, :]
+    def task(self, k):
+        curr_frame = self.frame[k, :]
         self.R[k, :, :] = curr_frame.T * curr_frame # [nfft x channels x channels]
         self.R_inv[k, :, :] = np.linalg.pinv(self.eps + self.R[k, :, :]) # [nfft x channels x channels]
         _, eig_vecs = np.linalg.eigh(np.squeeze(self.R[k, :, :]))
@@ -46,4 +46,4 @@ class beamformer_multi():
         self.alpha[k] = np.matmul(np.conjugate(self.w_temp[k, :]), self.atf[k, :])
         bf_out = np.matmul(self.w_temp[k, :], np.conjugate(curr_frame))/(self.eps + self.alpha[k])
 
-        return bf_out
+        return bf_out, k
