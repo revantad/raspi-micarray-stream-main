@@ -30,7 +30,6 @@ class beamformer_multi():
 
         with multiprocessing.Pool(num_workers) as p:
             for out, ind in p.map(self.task, range(0, self.nfft)):
-                print(ind)
                 self.bf_out[ind] = out
 
         #print('Time: ' + str(time.time() - start))
