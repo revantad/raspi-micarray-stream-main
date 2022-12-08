@@ -26,7 +26,7 @@ class record_audio():
                     frames_per_buffer=self.chunk)
 
         # Initiate beamformer object
-        self.bf = beamformer(self.nfft, self.chans)
+        self.bf = beamformer_multi(self.nfft, self.chans)
     
     def recordAudio(self):
         print("recording")

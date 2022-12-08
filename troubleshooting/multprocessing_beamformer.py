@@ -16,7 +16,7 @@ class beamformer_multi():
         self.eps = 1e-16
     
     def process2(self, frame):
-        start = time.time()
+        #start = time.time()
         
         # init
         self.frame = frame.T # nfft x channels
@@ -32,7 +32,7 @@ class beamformer_multi():
             for out, ind in p.map(self.task, range(0, self.nfft)):
                 self.bf_out[ind] = out
 
-        print('Time: ' + str(time.time() - start))
+        #print('Time: ' + str(time.time() - start))
         return self.bf_out
 
     def task(self, k):
