@@ -32,7 +32,7 @@ class beamformer_multi():
                 
             self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
             aa = np.matmul(np.matmul(w_temp[k, :], np.conjugate(curr_frame)), 1/(self.eps + self.alpha[k]))
-            print(size(aa))
+            print(aa.shape)
             self.bf_out[k] = aa
 
         print('Time: ' + str(time.time() - start))
