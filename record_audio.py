@@ -5,7 +5,7 @@ from src.audio_algo import *
 
 chunk = 512
 seconds = 2
-samp_rate = 44.1e3
+samp_rate = 8e3
 num_channels = 4
 audObject = record_audio(chunk, seconds, samp_rate, num_channels)
 
