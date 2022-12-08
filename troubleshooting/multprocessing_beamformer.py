@@ -27,15 +27,12 @@ class beamformer_multi():
             R_inv[k, :, :] = np.linalg.pinv(self.eps + R[k, :, :]) # [nfft x channels x channels]
             _, eig_vecs = np.linalg.eigh(np.squeeze(R[k, :, :]))
             atf[k, :] = eig_vecs[0, :]
-            
-            print(np.size(atf[k, :]))
-            
+                        
             w_temp[k, :] = np.matmul(R_inv[k, :, :], atf[k, :], out = w_temp[k, :])
-            bb = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
-            self.alpha[k] = bb
-            print(np.size(bb))
-            aa = np.matmul(np.matmul(w_temp[k, :], np.conjugate(curr_frame)), 1/(self.eps + self.alpha[k]))
-            print(np.size(aa))
+            self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
+            aaa = (self.eps + self.alpha[k])
+            aa = np.matmul(w_temp[k, :], np.conjugate(curr_frame))
+            print(np.size(aa), np.size(aaa))
             self.bf_out[k] = aa
 
         print('Time: ' + str(time.time() - start))
