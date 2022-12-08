@@ -32,8 +32,10 @@ class beamformer_multi():
         cdef double complex w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
         cdef double complex bf_out = np.zeros(shape = [self.nfft], dtype = np.complex)
         cdef double complex alpha = np.zeros(shape = [self.nfft], dtype = np.complex)
+        cdef int NFFT  = self.nfft
+        cdef int ind
         
-        for ind in range(0, self.nfft):
+        for ind in range(0, NFFT):
                 bf_out[ind], _ = self.task2(ind, frame, R, R_inv, atf, w_temp, alpha)
 
         self.bf_out = bf_out
