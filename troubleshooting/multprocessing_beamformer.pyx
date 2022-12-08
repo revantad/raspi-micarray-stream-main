@@ -38,7 +38,8 @@ class beamformer_multi():
         cdef int ind
 
         for ind in range(NFFT):
-            bf_out[ind] = task2(ind, c_frame, R, R_inv, atf, w_temp, alpha)
+            aa = task2(ind, c_frame, R, R_inv, atf, w_temp, alpha)
+            print(aa)
 
         self.bf_out = bf_out
         #print('Time: ' + str(time.time() - start))
