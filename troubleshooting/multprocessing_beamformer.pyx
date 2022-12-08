@@ -20,11 +20,11 @@ class beamformer_multi():
         #start = time.time()
         
         # init
-        self.frame = frame.T # nfft x channels
-        self.R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
-        self.R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
-        self.atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
-        self.w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+        #self.frame = frame.T # nfft x channels
+        #self.R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        #self.R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        #self.atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+        #self.w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
 
         cdef double complex R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
         cdef double complex R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
