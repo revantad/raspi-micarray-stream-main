@@ -3,6 +3,7 @@ import time
 import multiprocessing
 import threading
 import os
+import cython
 from Cython.Build import cythonize
 
 import concurrent.futures
@@ -26,13 +27,13 @@ class beamformer_multi():
         #self.atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
         #self.w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
 
-        cdef double complex R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
-        cdef double complex R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
-        cdef double complex atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
-        cdef double complex w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
-        cdef double complex bf_out = np.zeros(shape = [self.nfft])
-        cdef double complex alpha = np.zeros(shape = [self.nfft], dtype = np.complex)
-        cdef double complex c_frame = frame
+        cdef double R = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        cdef double R_inv = np.zeros(shape = [self.nfft, self.channels, self.channels], dtype = np.complex)
+        cdef double atf = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+        cdef double w_temp = np.zeros(shape = [self.nfft, self.channels], dtype = np.complex)
+        cdef double bf_out = np.zeros(shape = [self.nfft])
+        cdef double alpha = np.zeros(shape = [self.nfft], dtype = np.complex)
+        cdef double c_frame = frame
 
         cdef int NFFT  = self.nfft
         #cdef int ind
