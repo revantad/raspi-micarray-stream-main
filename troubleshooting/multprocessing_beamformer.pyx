@@ -34,7 +34,8 @@ class beamformer_multi():
         cdef double complex alpha = np.zeros(shape = [self.nfft], dtype = np.complex)
         cdef int NFFT  = self.nfft
         cdef int ind
-        
+        cdef double complex frame = self.frame
+
         for ind in range(0, NFFT):
                 bf_out[ind], _ = self.task2(ind, frame, R, R_inv, atf, w_temp, alpha)
 
@@ -105,4 +106,4 @@ class beamformer_multi():
         alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
         bf_out = np.matmul(w_temp[k, :], np.conjugate(curr_frame))/(eps + alpha[k])
 
-        return bf_out, k
+        return bf_out
