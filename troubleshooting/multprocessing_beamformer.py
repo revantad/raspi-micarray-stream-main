@@ -30,10 +30,7 @@ class beamformer_multi():
                         
             w_temp[k, :] = np.matmul(R_inv[k, :, :], atf[k, :], out = w_temp[k, :])
             self.alpha[k] = np.matmul(np.conjugate(w_temp[k, :]), atf[k, :])
-            aaa = (self.eps + self.alpha[k])
-            aa = np.matmul(w_temp[k, :], np.conjugate(curr_frame))
-            print(np.size(aa), np.size(aaa))
-            self.bf_out[k] = aa
+            self.bf_out[k] = np.matmul(w_temp[k, :], np.conjugate(curr_frame))/(self.eps + self.alpha[k])
 
         print('Time: ' + str(time.time() - start))
         
