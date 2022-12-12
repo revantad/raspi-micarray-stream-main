@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <alsa/asoundlib.h>
 	      
-main (int argc, char *argv[])
+void main (int argc, char *argv[])
 {
   int i;
   int err;
