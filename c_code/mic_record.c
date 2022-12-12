@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <alsa/asoundlib.h>
+#include <include/asoundlib.h>
 	      
 main (int argc, char *argv[])
 {
